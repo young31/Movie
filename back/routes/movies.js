@@ -33,4 +33,20 @@ router.post('/', function(req, res) {
   })
 })
 
+router.put('/:id/', function(req, res) {
+  Movie.updateOne({ _id: req.params.id }, { $set: req.query }, function(err, output) {
+    if (err) { res.status(500).json({ err: 'connect failed' }) }
+    if (!output.n) return res.status(404).json({ err: 'not founded' })
+    res.json({ res: 'success' })
+  })
+})
+
+router.delete('/:id/', function(req, res) {
+  Movie.remove({ _id: req.params.id }, function(err, output) {
+    if (err) return res.status(500).json({ error: 'connect failed' })
+    res.status(204).end()
+  })
+})
+
+
 module.exports = router
