@@ -1,14 +1,10 @@
-const mongoose = require('mongoose')
+// const mongoose = require('mongoose')
 
-const Schema = mongoose.Schema
-const userSchema = new Schema({
-  // _id: mongoose.Schema.Types.ObjectId,
-  userId: String,
-  password: String,
-  sex: Boolean,
-  followers: Array,
-  followings: Array,
-  reviews: Array,
-}, { collection: 'users' })
+// const Schema = mongoose.Schema
+// const genreSchema = new Schema({
+//   // _id: mongoose.Schema.Types.ObjectId,
+//   name: String,
+//   movies: Array
+// }, { collection: 'genres' })
 
-module.exports = mongoose.model('users', userSchema)
+// module.exports = mongoose.model('movies', genreSchema)
