@@ -3,7 +3,10 @@ const Float = require('mongoose-float').loadType(mongoose)
 
 const Schema = mongoose.Schema
 const movieSchema = new Schema({
-  // _id: mongoose.Schema.Types.ObjectId,
+  // id: {
+  //   type: Number,
+  //   unique: true
+  // },
   title: String,
   score: { type: Float },
   actors: String,

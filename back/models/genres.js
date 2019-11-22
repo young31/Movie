@@ -1,13 +1,10 @@
 const mongoose = require('mongoose')
-let fixtures = require('node-mongodb-fixtures')
-const Schema = mongoose.Schema
 
+const Schema = mongoose.Schema
 const genreSchema = new Schema({
   // _id: mongoose.Schema.Types.ObjectId,
   name: String,
-  movies: Array,
-
+  movies: Array
 }, { collection: 'genres' })
-
 
 module.exports = mongoose.model('genres', genreSchema)

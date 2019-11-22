@@ -30,13 +30,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //////////////////////////////////////
+const test = require('./routes/test')
+const movie = require('./routes/movies')
+const genre = require('./routes/genres')
 
-app.use('/api/movies', movieRouter)
-app.use('/api/users', usersRouter)
-app.use('/api/genres', genreRouter)
-app.use('/api/reviews', reviewRouter)
-
-////////////////////////////////////////
+app.use('/api/movies', movie)
+app.use('/api/test', test)
+app.use('/api/genre', genre)
+  // mongoose.Promise = global.Promise
+  ////////////////////////////////////////
 app.use('/', indexRouter);
 
 
