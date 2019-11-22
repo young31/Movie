@@ -1,13 +1,22 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
+    <div id="nav">
+      <div>
+        <router-link to="/movie">Home</router-link> |
+        <router-link to="/user">User</router-link>
+      </div>
+      <div class="container">
+        <router-view/>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+// import router from '@/router'
+
 export default {
-  name: 'App'
+  name: 'app',
 }
 </script>
 
@@ -19,5 +28,18 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+#nav {
+  padding: 30px;
+}
+
+#nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+#nav a.router-link-exact-active {
+  color: #42b983;
 }
 </style>
