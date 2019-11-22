@@ -37,9 +37,27 @@ router.post('/', function(req, res) {
   // })
 })
 
+<<<<<<< HEAD
 // router.put('/:movie_id', function(req, res){
 //   Movie.findOne({ _id: req.params.movie_id}, {$set: req.query})
 //   .then()
 // })
+=======
+router.put('/:id/', function(req, res) {
+  Movie.updateOne({ _id: req.params.id }, { $set: req.query }, function(err, output) {
+    if (err) { res.status(500).json({ err: 'connect failed' }) }
+    if (!output.n) return res.status(404).json({ err: 'not founded' })
+    res.json({ res: 'success' })
+  })
+})
+
+router.delete('/:id/', function(req, res) {
+  Movie.remove({ _id: req.params.id }, function(err, output) {
+    if (err) return res.status(500).json({ error: 'connect failed' })
+    res.status(204).end()
+  })
+})
+
+>>>>>>> 7694a3d27b2c09d30ace371804ca6a5ffff03001
 
 module.exports = router

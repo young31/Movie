@@ -9,8 +9,11 @@ const mongoose = require('mongoose')
 
 // const history = require('connect-history-api-fallback')
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const movieRouter = require('./routes/movies');
+const genreRouter = require('./routes/genres');
+const reviewRouter = require('./routes/reviews');
 
 const port = process.env.PORT || 3000
 var app = express();
@@ -27,6 +30,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //////////////////////////////////////
+<<<<<<< HEAD
 const test = require('./routes/test')
 const movie = require('./routes/movies')
 const genre = require('./routes/genres')
@@ -36,8 +40,16 @@ app.use('/api/test', test)
 app.use('/api/genre', genre)
   // mongoose.Promise = global.Promise
   ////////////////////////////////////////
+=======
+
+app.use('/api/movies', movieRouter)
+app.use('/api/users', usersRouter)
+app.use('/api/genres', genreRouter)
+app.use('/api/reviews', reviewRouter)
+
+////////////////////////////////////////
+>>>>>>> 7694a3d27b2c09d30ace371804ca6a5ffff03001
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 
 
