@@ -1,6 +1,5 @@
 <template>
   <div class="index">
-    <h1>홈</h1>
     <LoginForm/>
     <SignupForm/>
   </div>
