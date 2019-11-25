@@ -7,7 +7,7 @@
       
       :state="state1"
     >
-      <b-form-input v-model="credentials.email" :state="state1" trim placeholder="이메일 입력"></b-form-input>
+      <b-form-input @keyup.enter="signup" v-model="credentials.email" :state="state1" trim placeholder="이메일 입력"></b-form-input>
     </b-form-group>
 
     <!-- userId -->
@@ -16,7 +16,7 @@
       
       :state="state2"
     >
-      <b-form-input v-model="credentials.userId" :state="state2" trim placeholder="유저명 입력"></b-form-input>
+      <b-form-input @keyup.enter="signup" v-model="credentials.userId" :state="state2" trim placeholder="유저명 입력"></b-form-input>
     </b-form-group>
 
     <!-- password -->
@@ -25,7 +25,7 @@
       
       :state="state3"
     >
-      <b-form-input type="password" v-model="credentials.password" :state="state3" trim placeholder="비밀번호 입력(8자이상)"></b-form-input>
+      <b-form-input @keyup.enter="signup" type="password" v-model="credentials.password" :state="state3" trim placeholder="비밀번호 입력(8자이상)"></b-form-input>
     </b-form-group>
 
     <!-- password confirm-->
@@ -34,7 +34,7 @@
       
       :state="state4"
     >
-      <b-form-input type="password" v-model="credentials.passwordConfirm" :state="state4" trim placeholder="비밀번호 확인"></b-form-input>
+      <b-form-input @keyup.enter="signup" type="password" v-model="credentials.passwordConfirm" :state="state4" trim placeholder="비밀번호 확인"></b-form-input>
     </b-form-group>
 
     <button class="btn btn-dark" @click="signup">회원가입</button>
