@@ -10,7 +10,7 @@ const mongoose = require('mongoose')
 // const history = require('connect-history-api-fallback')
 
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const usersRouter = require('./routes/user');
 const movieRouter = require('./routes/movies');
 const genreRouter = require('./routes/genres');
 const reviewRouter = require('./routes/reviews');
@@ -33,11 +33,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 // const test = require('./routes/test')
 const movie = require('./routes/movies')
 const genre = require('./routes/genres')
-const user = require('./models/users')
+const user = require('./routes/user')
+
 app.use('/api/movies', movie)
   // app.use('/api/test', test)
 app.use('/api/genre', genre)
-app.use('/api/user', user)
+app.use('/user', user)
 
 mongoose.Promise = global.Promise
   ////////////////////////////////////////
