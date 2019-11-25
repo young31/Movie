@@ -49,10 +49,12 @@ export default {
 
         axios.post(SERVER_IP + '/user/login', this.credentials)
           .then(response => {
+            if (response.data.message !== 'error') {
+              router.push('/movie')
+            }
             // this.$session.start()
             // this.$session.set('jwt', response.data.token)
             console.log(response)
-            router.push('/movie')
           })
           .catch(error =>{
             console.error(error)

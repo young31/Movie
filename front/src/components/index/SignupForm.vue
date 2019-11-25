@@ -54,9 +54,11 @@ export default {
         const SERVER_IP = process.env.VUE_APP_SERVER_IP
 
         axios.post(SERVER_IP + '/user/signup', this.credentials)
-          .then(resposne => {
-            console.log(resposne.data)
-            router.push('/movie')
+          .then(response => {
+            if (response.data.message !== 'error') {
+              router.push('/movie')
+            }
+            console.log(response.data)
           })
           .catch(error => {
             console.error(error)
