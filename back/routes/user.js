@@ -48,14 +48,15 @@ router.post('/login', async function(req, res) {
         email: req.body.email
       },
       secretKey.secret, { expiresIn: '1d' })
-    if (user.userId === req.body.userId && user.password === req.body.password) {
+
+    if (user.email === req.body.email && user.password === req.body.password) {
       res.cookie('user', token)
       res.send('loggined')
     } else {
-      res.send('다름')
+      res.json({ message: 'error' })
     }
   } else { // 회원정보가 없으면
-    res.send('회원정보가 없습니다.')
+    res.json({ message: 'error' })
   }
 })
 
