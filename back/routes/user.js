@@ -36,7 +36,7 @@ router.post('/signup', async function(req, res) {
     User.create(req.body)
     res.send('success')
   } else {
-    res.send('existed email')
+    res.json({ message: 'error' })
   }
 })
 
