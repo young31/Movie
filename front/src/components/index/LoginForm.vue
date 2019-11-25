@@ -13,7 +13,7 @@
     label="아이디"
     label-for="input-1" -->
     <!-- :invalid-feedback="invalidFeedback1" -->
-      <b-form-input id="input-1" v-model="credentials.email" :state="state1" trim placeholder="이메일 입력"></b-form-input>
+      <b-form-input id="input-1" @keyup.enter="login" v-model="credentials.email" :state="state1" trim placeholder="이메일 입력"></b-form-input>
     </b-form-group>
 
     <!-- password -->
@@ -28,10 +28,10 @@
     label="비밀번호"
     label-for="input-2" -->
     <!-- :invalid-feedback="invalidFeedback2" -->
-      <b-form-input type="password" id="input-2" v-model="credentials.password" :state="state2" trim placeholder="비밀번호 입력(8자이상)"></b-form-input>
+      <b-form-input type="password" id="input-2" @keyup.enter="login" v-model="credentials.password" :state="state2" trim placeholder="비밀번호 입력(8자이상)"></b-form-input>
     </b-form-group>
 
-    <button class="btn btn-dark">로그인</button>
+    <button class="btn btn-dark" @click="login">로그인</button>
   </div>
 </template>
 
@@ -48,10 +48,14 @@ export default {
         const SERVER_IP = process.env.VUE_APP_SERVER_IP
 
         axios.post(SERVER_IP + '/user/login', this.credentials)
-          .then(() => {
+          .then(response => {
             // this.$session.start()
             // this.$session.set('jwt', response.data.token)
+            console.log(response)
             router.push('/movie')
+          })
+          .catch(error =>{
+            console.error(error)
           })
       }
     }
