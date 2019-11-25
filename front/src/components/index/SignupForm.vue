@@ -1,46 +1,102 @@
 <template>
   <div>
-    <h3>회원가입</h3>
-    <!-- id -->
+    <h3>로그인</h3>
+    <!-- email -->
     <b-form-group
-      id="idForm"
-      label-cols-sm="4"
-      label-cols-lg="3"
-      label="아이디"
-      label-for="input-1"
+      id="signupEmail"
       
-      :valid-feedback="validFeedback1"
       :state="state1"
     >
-    <!-- :invalid-feedback="invalidFeedback1" -->
-      <b-form-input id="input-1" v-model="userId" :state="state1" trim placeholder="아이디는 4자 이상 입력해주세요."></b-form-input>
+      <b-form-input v-model="credentials.email" :state="state1" trim placeholder="이메일 입력"></b-form-input>
+    </b-form-group>
+
+    <!-- userId -->
+    <b-form-group
+      id="signupUserId"
+      
+      :state="state2"
+    >
+      <b-form-input v-model="credentials.userId" :state="state2" trim placeholder="유저명 입력"></b-form-input>
     </b-form-group>
 
     <!-- password -->
     <b-form-group
-      id="passwordForm"
-      label-cols-sm="4"
-      label-cols-lg="3"
-      label="비밀번호"
-      label-for="input-2"
+      id="signupPassword"
       
-      :valid-feedback="validFeedback2"
-      :state="state2"
+      :state="state3"
     >
-    <!-- :invalid-feedback="invalidFeedback2" -->
-      <b-form-input type="password" id="input-2" v-model="password" :state="state2" trim placeholder="비밀번호는 8자 이상 입력해주세요."></b-form-input>
+      <b-form-input type="password" v-model="credentials.password" :state="state3" trim placeholder="비밀번호 입력(8자이상)"></b-form-input>
     </b-form-group>
 
-    <button class="btn btn-dark">회원가입</button>
+    <!-- password confirm-->
+    <b-form-group
+      id="singupPasswordConfrim"
+      
+      :state="state4"
+    >
+      <b-form-input type="password" v-model="credentials.passwordConfirm" :state="state4" trim placeholder="비밀번호 확인"></b-form-input>
+    </b-form-group>
+
+    <button class="btn btn-dark" @click="signup">회원가입</button>
   </div>
 </template>
 
 <script>
+import * as Emailvalidator from 'email-validator'
+import axios from 'axios'
+import router from '@/router'
+
 export default {
-  name: 'SignupForm'
-}
+  name: "SignupForm",
+  methods: {
+    signup() {
+      if (this.state1 && this.state2 && this.state3 && this.state4) {
+        const SERVER_IP = process.env.VUE_APP_SERVER_IP
+
+        axios.post(SERVER_IP + '/user/signup', this.credentials)
+          .then(resposne => {
+            console.log(resposne.data)
+            router.push('/movie')
+          })
+          .catch(error => {
+            console.error(error)
+          })
+      }
+    }
+  },
+  computed: {
+    // email 
+    state1() {
+      return Emailvalidator.validate(this.credentials.email);
+    },
+
+    // userId
+    state2() {
+      return this.credentials.userId.length >= 2 ? true : false;
+    },
+
+    // password
+    state3() {
+      return this.credentials.password.length >= 8 ? true : false;
+    },
+
+    // password confirm
+    state4() {
+      return this.credentials.password === this.credentials.passwordConfirm ? true : false;
+    },
+  },
+  data() {
+    return {
+      credentials: {
+        email: "",
+        userId: "",
+        password: "",
+        passwordConfirm: ""
+      }
+    };
+  }
+};
 </script>
 
 <style>
-
 </style>
