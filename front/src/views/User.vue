@@ -1,5 +1,6 @@
 <template>
   <div class="user">
+    <UserDetail />
     <h1>유저정보</h1>
     <button @click="inc">click</button>
     <transition-group   name="bounce"
@@ -17,8 +18,12 @@
 
 <script>
 // import { animateOnScroll } from "mdbvue";
+import UserDetail from '../components/UserDetail'
 export default {
   name: 'User',
+  components: {
+    UserDetail
+  },
   data() {
     return {
       name: [1,2,3,4,5,6,7,8,9,10],
@@ -29,9 +34,6 @@ export default {
     inc(){
       this.next = (this.next+1) % 3
     },
-    enter(el) {
-      el.style.opacity = 30
-    } 
   }
 }
 </script>

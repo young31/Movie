@@ -12,30 +12,21 @@ router.get('/', function(req, res, next) {
 })
 
 router.post('/', function(req, res) {
-  let review = new Review()
-  review.content = req.query.content
-  review.score = req.query.score
-  review.movies = req.query.movies
-  review.user = req.query.user
-
-  console.log(Review)
-  review.save(function(err) {
-    if (err) {
-      console.log(err)
-      res.status(400).json({ result: 'error' })
-      return
-    }
-
-    res.status(200).json({ result: 1 })
-  })
+  Review.create(req.body)
+    .then(res.status(200).send("accepted"))
+    .catch(res.status(404).send('failed'))
 })
 
-router.put('/:id/', function(req, res) {
-  Review.updateOne({ _id: req.params.id }, { $set: req.query }, function(err, output) {
-    if (err) { res.status(500).json({ err: 'connect failed' }) }
-    if (!output.n) return res.status(404).json({ err: 'not founded' })
-    res.json({ res: 'success' })
-  })
+router.put('/:user/:movie', function(req, res) {
+  const review = Review.find({
+      user: req.params.user,
+      movie: req.params.movie
+    })
+    // Review.updateOne({ _id: req.params.id }, { $set: req.query }, function(err, output) {
+    //   if (err) { res.status(500).json({ err: 'connect failed' }) }
+    //   if (!output.n) return res.status(404).json({ err: 'not founded' })
+    //   res.json({ res: 'success' })
+    // })
 })
 
 router.delete('/:id/', function(req, res) {

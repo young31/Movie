@@ -22,6 +22,12 @@ const userSchema = mongoose.Schema({
   },
   master: {
     type: Boolean,
+  },
+  like_movies: {
+    type: Array
+  },
+  reviews: {
+    type: Array
   }
   // tokens: [{
   //   token: {
