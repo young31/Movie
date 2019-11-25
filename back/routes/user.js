@@ -10,6 +10,7 @@ const secretKey = require('../config/jwt')
 const decode = require('../config/auth')
 
 router.get('/', function(req, res) {
+  res.cookie('user', 'abs')
   User.find(function(err, users) {
     if (err) { return res.status(500).send({ error: 'fail' }) }
     // res.send(users)
@@ -50,8 +51,8 @@ router.post('/login', async function(req, res) {
       secretKey.secret, { expiresIn: '1d' })
 
     if (user.email === req.body.email && user.password === req.body.password) {
-      res.cookie('user', token)
-      res.send('loggined')
+      // res.cookie('user', token)
+      res.json({ message: token })
     } else {
       res.json({ message: 'error' })
     }
