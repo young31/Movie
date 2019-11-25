@@ -51,9 +51,9 @@ export default {
   methods: {
     signup() {
       if (this.state1 && this.state2 && this.state3 && this.state4) {
-        const SERVER_IP = process.env.VUE_APP_SERVER_IP
+        // const SERVER_IP = process.env.VUE_APP_SERVER_IP
 
-        axios.post(SERVER_IP + '/user/signup', this.credentials)
+        axios.post('127.0.0.1:3000' + '/user/signup', this.credentials)
           .then(resposne => {
             console.log(resposne.data)
             router.push('/movie')

@@ -30,8 +30,9 @@ router.get('/', function(req, res) {
     // }
 })
 
-router.post('/signup', function(req, res) {
-  if (User.find({ email: req.body.email })) {
+router.post('/signup', async function(req, res) {
+  const user = await User.findOne({ email: req.body.email })
+  if (!user) {
     User.create(req.body)
     res.send('success')
   } else {
@@ -39,14 +40,14 @@ router.post('/signup', function(req, res) {
   }
 })
 
-router.post('/login', function(req, res) {
-  const user = User.find({ email: req.body.email })
-  if (!user) {
+
+router.post('/login', async function(req, res) {
+  const user = await User.findOne({ email: req.body.email })
+  if (user) {
     let token = jwt.sign({
         email: req.body.email
       },
       secretKey.secret, { expiresIn: '1d' })
-
     if (user.userId === req.body.userId && user.password === req.body.password) {
       res.cookie('user', token)
       res.send('loggined')
