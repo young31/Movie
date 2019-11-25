@@ -9,10 +9,13 @@ const movieSchema = new Schema({
   // },
   title: String,
   score: { type: Float },
-  actors: String,
+  directors: Array,
+  actors: Array,
   description: String,
   posterUrl: String,
   genres: Array,
+  runningTime: Number,
+  preview: String,
   like_users: Array,
   reviews: Array
 }, { collection: 'movies' })

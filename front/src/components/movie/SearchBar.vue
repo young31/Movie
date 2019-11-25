@@ -14,7 +14,7 @@ export default {
   },
   method: {
     click() {
-
+      
     }
   }
 }

@@ -13,8 +13,12 @@ router.get('/', function(req, res, next) {
 })
 
 router.post('/', function(req, res) {
-  Movie.create(req.query)
-    .then((movie) => res.send(movie))
+  console.log('1111111111')
+  console.log(req.body)
+  Movie.create(req.body)
+    .then((movie) => {
+      res.send(movie)
+    })
     .catch((err) => res.send({ message: 'error' }))
     // let movie = new Movie()
     // movie.title = req.query.title
