@@ -30,18 +30,28 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //////////////////////////////////////
-const test = require('./routes/test')
+// const test = require('./routes/test')
 const movie = require('./routes/movies')
 const genre = require('./routes/genres')
-
+const user = require('./models/users')
 app.use('/api/movies', movie)
-app.use('/api/test', test)
+  // app.use('/api/test', test)
 app.use('/api/genre', genre)
-  // mongoose.Promise = global.Promise
+app.use('/api/user', user)
+
+mongoose.Promise = global.Promise
   ////////////////////////////////////////
 app.use('/', indexRouter);
 
-
+////////////////////////
+app.use(function(req, res, next) {
+  // CORS에  x-access-token이 추가되었습니다. jwt로 생성된 토큰은 header의 x-access-token 항목을 통해 전달됩니다.
+  // CORS(Cross-Origin Resource Sharing): 한 도메인에서 로드되어 다른 도메인에 있는 리소스와 상호 작용하는 클라이언트 웹 애플리케이션에 대한 방법을 정의
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.header('Access-Control-Allow-Headers', 'content-type, x-access-token');
+  next();
+});
 
 
 /////////////////////////////
