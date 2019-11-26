@@ -17,6 +17,7 @@ router.post('/search', async function(req, res) {
   let movie_actors
   let movie_directors
   let result
+  let genres = []
 
   if (req.body.keyword) {
     movie_title = Movie.find({ title: { $regex: req.body.keyword, $options: "i" } })
@@ -37,7 +38,9 @@ router.post('/search', async function(req, res) {
   }
 
   if (req.body.genre) {
-    genres = [{ genres: req.body.genre }]
+    for (g of req.body.genre) {
+      genres.push({ genres: g })
+    }
 
     movie_title = movie_title
       .or(genres)
@@ -79,7 +82,23 @@ router.post('/search', async function(req, res) {
 })
 
 
+router.post('/:index/review', async function(req, res) {
+  // 유저정보와 평점, 리뷰정보와 해당 영화아이디(index)가 넘어와 야됨
+  // 영화정보는 위에서 보는 것 처럼 넘겨주면 됨
+  let movie = await Movie.findOne({ index: req.params.index })
+  console.log(movie)
+  console.log(req.params)
+  const review = { // user, rate, content
+    user: req.body.user,
+    rate: req.body.rate,
+    content: req.body.content
+  }
 
+  movie.reviews.push(review)
+  movie.save()
+  console.log(movie)
+  res.send('successfully saved')
+})
 
 router.post('/', function(req, res) {
   // console.log('1111111111')
@@ -91,6 +110,14 @@ router.post('/', function(req, res) {
     .catch((err) => res.send({ message: 'error' }))
 })
 
+router.post('/:index/like', async function(req, res) { // 유저정보(email)와 해당 영화 id가 넘어와야 됨
+  let movie = await Movie.findOne({ index: req.params.index })
+  if (movie.like_users.includes(req.body.email)) {
+    movie.splice(movie.indexOf(req.body.email), 1)
+  } else {
+    movie.like_users.push(req.body.email)
+  }
+})
 
 router.post('/reviews', async function(req, res) {
   const aa = Movie.findOne({ name: req.body.name })

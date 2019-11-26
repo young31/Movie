@@ -21,7 +21,7 @@ const movieSchema = new Schema({
   genres: Array,
   runningTime: Number,
   preview: String,
-  like_users: Array,
+  like_users: Array, // user, like
   reviews: Array // user, rate, content
 }, { collection: 'movies' })
 
