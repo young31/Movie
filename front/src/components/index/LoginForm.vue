@@ -27,7 +27,7 @@
 <script>
 import * as Emailvalidator from 'email-validator'
 import axios from 'axios'
-import router from '@/router'
+// import router from '@/router'
 
 export default {
   name: "LoginForm",
@@ -39,10 +39,11 @@ export default {
         axios.post(SERVER_IP + '/user/login', this.credentials)
           .then(response => {
             if (response.data.message !== 'error') {
-              router.push('/')
+              this.cancelClick()
+              // router.push('/')
             }
-            this.$session.start()
-            this.$session.set('jwt', response.data.message)
+            // this.$session.start()
+            // this.$session.set('jwt', response.data.message)
             this.$store.dispatch('login', response.data.message)
             console.log(response.data.message)
           })

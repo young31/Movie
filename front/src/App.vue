@@ -1,15 +1,5 @@
 <template>
   <div id="app">
-    <!-- <div id="nav">
-      <div>
-        <div v-if="isLoggedIn">
-          <router-link to="/movie">Home</router-link> |
-          <router-link to="/user">User</router-link>
-        </div>
-      </div>
-    </div>-->
-    
-    <!-- navbar -->
     <div>
       <b-navbar id="nav" toggleable="lg" type="light" variant="transparent">
         <b-navbar-brand href="/">Home</b-navbar-brand>
