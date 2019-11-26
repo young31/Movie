@@ -9,16 +9,20 @@ const secretKey = require('../config/jwt')
 
 const decode = require('../config/auth')
 
-router.get('/', function(req, res) {
-  res.cookie('user', 'abs')
-  User.find(function(err, users) {
-    if (err) { return res.status(500).send({ error: 'fail' }) }
-    // res.send(users)
-    // next()
-    res.json(users)
 
-  })
-  console.log('users')
+// 유저 전체 조회(login 하듯이 유저 정보 전달 => 마스터 유저확인)
+router.post('/', function(req, res) {
+  if (!req.body.master) {
+    res.send('you are not authorized')
+    res.end()
+  }
+  User.find(function(err, users) {
+      if (err) { return res.status(500).send({ error: 'fail' }) }
+      // res.send(users)
+      // next()
+      res.json(users)
+
+    })
     // if (req.cookies.user.master) {
     //   User.find(function(err, users) {
     //     if (err) { return res.status(500).send({ error: 'fail' }) }
@@ -31,6 +35,7 @@ router.get('/', function(req, res) {
     // }
 })
 
+// 회원가입
 router.post('/signup', async function(req, res) {
   const user = await User.findOne({ email: req.body.email })
   if (!user) {
@@ -42,6 +47,7 @@ router.post('/signup', async function(req, res) {
 })
 
 
+// 로그인
 router.post('/login', async function(req, res) {
   const user = await User.findOne({ email: req.body.email })
   if (user) {
@@ -61,40 +67,15 @@ router.post('/login', async function(req, res) {
   }
 })
 
-router.post('/:email/reviews', async function(req, res) {
-  // 성공여부 확인 안해봄
-  let user = await User.findOne({ email: req.params.email })
-  console.log(user)
-  let review = req.body
-  console.log(review)
 
-  // delete review.email
-  // review.index = req.body.index
+// 개별 유저 조회
+router.get('/:email', async function(req, res) {
+  let user = await User.find({ email: req.params.email })
+  if (user) {
+    res.json(user)
+  } else { res.status(404).json({ message: 'fail' }) }
 
-  user.reviews.push(review)
-  user.save()
-  res.send('aa')
 })
-
-
-// user.userId = req.body.userId
-// user.password = req.query.password
-// user.sex = req.query.sex
-// user.followers = req.query.followers
-// user.followings = req.query.followings
-// user.reviews = req.query.reviews
-
-// console.log(User)
-// user.save(function(err) {
-// if (err) {
-//   console.log(err)
-//   res.status(400).json({ result: 'error' })
-//   return
-// }
-
-// res.status(200).json({ result: 1 })
-// })
-// })
 
 // router.put('/:id/', function(req, res) {
 //   User.updateOne({ _id: req.params.id }, { $set: req.query }, function(err, output) {

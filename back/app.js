@@ -14,8 +14,6 @@ const mongoose = require('mongoose')
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/user');
 const movieRouter = require('./routes/movies');
-const genreRouter = require('./routes/genres');
-const reviewRouter = require('./routes/reviews');
 
 const port = process.env.PORT || 3000
 var app = express();
@@ -45,12 +43,9 @@ app.use(function(req, res, next) {
 /////////////////
 // const test = require('./routes/test')
 const movie = require('./routes/movies')
-const genre = require('./routes/genres')
 const user = require('./routes/user')
 
 app.use('/api/movies', movie)
-  // app.use('/api/test', test)
-app.use('/api/genre', genre)
 app.use('/user', user)
 
 mongoose.Promise = global.Promise
