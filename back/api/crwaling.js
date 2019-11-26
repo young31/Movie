@@ -1,15 +1,23 @@
 const axios = require('axios')
 const cheerio = require('cheerio')
 const delay = require('delay')
-const titles = []
+
+function replaceAll(str, search, replace) {
+  return str.split(search).join(replace)
+}
+
+const get_delay = async () => {
+  await delay(200)
+}
 
 const crawling = async () => {
-  for ( let i = 189053; i < 189054; i++ ) {
-    // console.log(i)
-    async () => {
-      await delay(100)
+  for ( let i = 32055; i < 190561; i++ ) {
+  // for ( let i = 136873; i < 136874; i++ ) {
+    console.log(i)
+    try { get_delay()
+    } catch (e) {
+      console.log(e)
     }
-
     const html = await axios.get(`https://movie.naver.com/movie/bi/mi/basic.nhn?code=${i}`)
     const $ = cheerio.load(html.data);
     const $title = $("#content").children('div.article')
@@ -18,6 +26,7 @@ const crawling = async () => {
     const $description = $score.children('div:nth-child(1)').children('div').children('div')
     const $posterUrl = $title.children('div.mv_info_area')
     const $genre = $posterUrl.children('div.mv_info').children('dl').children('dd:nth-child(2)').children('p')
+    const $openDt = $genre.children('span:nth-child(4)')
     const $runningTime = $genre.children('span:nth-child(3)')
     const $preview = $score.children('div:nth-child(4)').children('div').children('ul').children('li:nth-child(1)').children('a')
 
@@ -43,9 +52,10 @@ const crawling = async () => {
       }
     }
     description = $description.children('p').text()
-    posterUrl = $posterUrl.children('div.poster').children('a').children('img').attr('src')
+    // posterUrl = $posterUrl.children('div.poster').children('a').children('img').attr('src')
+    posterUrl = `https://movie.naver.com/movie/bi/mi/photoViewPopup.nhn?movieCode=${i}`
     $genres = $genre.children('span:nth-child(1)')
-    // console.log($genres.children('a').length)
+    
     const genres = []
     for ( let i = 1; i <= $genres.children('a').length; i++ ) {
       genres.push($genres.children(`a:nth-child(${i})`).text())
@@ -55,6 +65,12 @@ const crawling = async () => {
       continue
     }
     preview = 'https:/' + $preview.attr('href')
+    let openDt = ''
+    for ( let i = 1; i <= $openDt.children('a').length; i++ ) {
+      openDt = openDt + $openDt.children(`a:nth-child(${i})`).text()
+    }
+    // openDt = openDt.replace('.', '-')
+    openDt = replaceAll(openDt, '.', '-').trim()
     // console.log(title)
     // console.log(score)
     // console.log(directors)
@@ -65,8 +81,12 @@ const crawling = async () => {
     // console.log(runningTime)
     // console.log(preview)
 
+    // document.querySelector(" a:nth-child(1)")
+
     const movie_info = {
+      index: i,
       title,
+      openDt,
       score: parseFloat(score),
       directors,
       actors,

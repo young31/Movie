@@ -7,7 +7,12 @@ const movieSchema = new Schema({
   //   type: Number,
   //   unique: true
   // },
+  index: {
+    type: Number,
+    unique: true
+  },
   title: String,
+  openDt: Date,
   score: { type: Float },
   directors: Array,
   actors: Array,
@@ -17,7 +22,7 @@ const movieSchema = new Schema({
   runningTime: Number,
   preview: String,
   like_users: Array,
-  reviews: Array
+  reviews: Array  // user, rate, content
 }, { collection: 'movies' })
 
 module.exports = mongoose.model('movies', movieSchema)

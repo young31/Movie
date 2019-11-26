@@ -2,6 +2,7 @@ import Vue from 'vue'
 import BootstrapVue from 'bootstrap-vue'
 import App from './App.vue'
 import router from './router'
+import VShowSlide from 'v-show-slide'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -15,6 +16,7 @@ Vue.use(VueAnime)
 Vue.use(VueAnimated)
 Vue.use(SequentialEntrance)
 Vue.use(BootstrapVue)
+Vue.use(VShowSlide)
 Vue.config.productionTip = false
 
 
