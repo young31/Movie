@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>로그인</h3>
+    <h3>회원가입</h3>
     <!-- email -->
     <b-form-group
       id="signupEmail"
@@ -37,7 +37,8 @@
       <b-form-input @keyup.enter="signup" type="password" v-model="credentials.passwordConfirm" :state="state4" trim placeholder="비밀번호 확인"></b-form-input>
     </b-form-group>
 
-    <button class="btn btn-dark" @click="signup">회원가입</button>
+    <button class="btn btn-dark mr-1" @click="signup">회원가입</button>
+    <button class="btn btn-danger" @click="cancelClick">취소</button>
   </div>
 </template>
 
@@ -56,7 +57,7 @@ export default {
         axios.post(SERVER_IP + '/user/signup', this.credentials)
           .then(response => {
             if (response.data.message !== 'error') {
-              router.push('/movie')
+              router.push('/')
             }
             console.log(response.data)
           })
@@ -64,6 +65,9 @@ export default {
             console.error(error)
           })
       }
+    },
+    cancelClick() {
+      this.$store.dispatch('loginClick', 0)
     }
   },
   computed: {

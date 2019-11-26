@@ -1,8 +1,14 @@
 <template>
   <div class="index">
-    <LoginForm/>
-    <SignupForm/>
-    <SearchBar />
+    <div v-if="loginState === 1">
+      <LoginForm />
+    </div>
+    <div v-else-if="loginState === 2">
+      <SignupForm />
+    </div>
+    <div v-else>
+      <SearchBar />
+    </div>
   </div>
 </template>
 
@@ -17,6 +23,11 @@ export default {
     LoginForm,
     SignupForm,
     SearchBar
+  },
+  computed: {
+    loginState() {
+      return this.$store.state.loginState
+    }
   }
 }
 </script>
