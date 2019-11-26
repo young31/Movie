@@ -121,7 +121,7 @@ router.post('/:index/review', async function(req, res) {
   movie.save()
 
   let user = await User.findOne({ email: req.body.email })
-  user.reviews.push(req.params.index)
+  user.reviews.push(req.params.index) // 수정사항 => 평점도 함께 넣어서 내가 높은 점수 준 영화들 보기?
   user.save()
   res.send('successfully saved')
 })
