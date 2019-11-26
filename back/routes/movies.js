@@ -95,8 +95,8 @@ router.post('/search', async function(req, res) {
 
   result = {
     movie_title: movie_title,
-    movie_actors: movie_actors,
-    movie_directors: movie_directors
+    movie_actor: movie_actor,
+    movie_director: movie_director
   }
 
   res.json({ result: result })

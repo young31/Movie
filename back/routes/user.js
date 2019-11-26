@@ -70,27 +70,26 @@ router.post('/login', async function(req, res) {
 
 // 개별 유저 조회
 router.get('/:email', async function(req, res) {
-  let user = await User.find({ email: req.params.email })
+  let user = await User.findOne({ email: req.params.email })
   if (user) {
     res.json(user)
   } else { res.status(404).json({ message: 'fail' }) }
 
 })
 
-// router.put('/:id/', function(req, res) {
-//   User.updateOne({ _id: req.params.id }, { $set: req.query }, function(err, output) {
-//     if (err) { res.status(500).json({ err: 'connect failed' }) }
-//     if (!output.n) return res.status(404).json({ err: 'not founded' })
-//     res.json({ res: 'success' })
-//   })
-// })
 
-// router.delete('/:id/', function(req, res) {
-//   User.remove({ _id: req.params.id }, function(err, output) {
-//     if (err) return res.status(500).json({ error: 'connect failed' })
-//     res.status(204).end()
-//   })
-// })
+router.put('/:email', function(req, res) { // 본인 인증여부 미구현
+  User.findOneAndUpdate({ email: req.body.email }, { $set: req.body }, function(err, result) {
+    if (err) { res.status(500).json({ message: "connect failed" }) }
+    res.json({ message: "successfully saved" })
+  })
+})
 
+router.delete('/:email', function(req, res) {
+  User.remove({ email: req.params.email }, function(err, result) {
+    if (err) { res.status(500).json({ message: 'connect failed' }) }
+    res.status(204).end()
+  })
+})
 
 module.exports = router
