@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Movie = require('../models/movies')
 const axios = require('axios')
+const User = require('../models/users')
 
 router.get('/', function(req, res, next) {
   Movie.find({})
@@ -12,6 +13,17 @@ router.get('/', function(req, res, next) {
       res.json(movies)
     })
 })
+
+router.post('/', function(req, res) {
+  // console.log('1111111111')
+  console.log(req.body)
+  Movie.create(req.body)
+    .then((movie) => {
+      res.send(movie)
+    })
+    .catch((err) => res.send({ message: 'error' }))
+})
+
 
 router.post('/search', async function(req, res) {
   let movie_title
@@ -99,29 +111,10 @@ router.post('/:index/review', async function(req, res) {
   movie.reviews.push(review)
   movie.save()
 
-  // 유저에 보냄
-  delete review.email
-  review.index = req.params.index
-
-  console.log(review)
-
-  console.log(req.body.email)
-  const url = `127.0.0.1:3000/user/${req.body.email}/reviews`
-  console.log(url)
-  const aaa = await axios.post(url, review)
-  console.log(aaa)
-
+  let user = await User.findOne({ email: req.body.email })
+  user.reviews.push(req.params.index)
+  user.save()
   res.send('successfully saved')
-})
-
-router.post('/', function(req, res) {
-  // console.log('1111111111')
-  console.log(req.body)
-  Movie.create(req.body)
-    .then((movie) => {
-      res.send(movie)
-    })
-    .catch((err) => res.send({ message: 'error' }))
 })
 
 router.post('/:index/like', async function(req, res) { // 유저정보(email)와 해당 영화 id가 넘어와야 됨
@@ -134,24 +127,49 @@ router.post('/:index/like', async function(req, res) { // 유저정보(email)와
 
   movie.save()
 
+  let user = await User.findOne({ email: req.body.email })
+  if (req.params.index in user.like_movies) {
+    user.splice(user.indexOf(req.params.index), 1)
+  } else {
+    user.like_movies.push(req.params.index)
+  }
+
+  user.save()
+
   res.send('successfully saved')
 })
 
-// router.post('/reviews', async function(req, res) {
-//   const aa = Movie.findOne({ name: req.body.name })
-//   const temp = {
-//     email: '',
-//     rate: '',
-//     content: ''
-//   }
-//   aa.reviews.push(temp)
-//   aa.save()
-// })
+router.post('/like', async function(req, res) {
+  let target = await Movie.find({ like_users: { $in: req.body.email } })
+  console.log(target)
+  res.json(target)
+})
 
 
-// router.put('/:movie_id', function(req, res){
-//   Movie.findOne({ _id: req.params.movie_id}, {$set: req.query})
-//   .then()
-// })
+
+router.post('/:email/user_like', async function(req, res) {
+  console.log('aaaa')
+  let movie = await Movie.find({ reviews: { $in: req.params.email } })
+  movie.like_users.push(req.body)
+  movie.save()
+  res.json(likes)
+})
+
+router.post('/reviews', async function(req, res) {
+  const aa = Movie.findOne({ name: req.body.name })
+  const temp = {
+    email: '',
+    rate: '',
+    content: ''
+  }
+  aa.reviews.push(temp)
+  aa.save()
+})
+
+
+router.put('/:movie_id', function(req, res) {
+  Movie.findOne({ _id: req.params.movie_id }, { $set: req.query })
+    .then()
+})
 
 module.exports = router
