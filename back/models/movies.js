@@ -22,7 +22,7 @@ const movieSchema = new Schema({
   runningTime: Number,
   preview: String,
   like_users: Array,
-  reviews: Array  // user, rate, content
+  reviews: Array // user, rate, content
 }, { collection: 'movies' })
 
 module.exports = mongoose.model('movies', movieSchema)

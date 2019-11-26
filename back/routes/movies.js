@@ -19,9 +19,9 @@ router.post('/search', async function(req, res) {
   let result
 
   if (req.body.keyword) {
-    movie_title = await Movie.find({ title: { $in: req.body.keyword } }).sort('-openDt')
-    movie_actors = await Movie.find({ actors: { $in: req.body.keyword } }).sort('-openDt')
-    movie_directors = await Movie.find({ directors: { $in: req.body.keyword } }).sort('-openDt')
+    movie_title = Movie.find({ title: { $regex: req.body.keyword, $options: "i" } })
+    movie_actors = Movie.find({ actors: { $in: req.body.keyword } })
+    movie_directors = Movie.find({ directors: { $in: req.body.keyword } })
   }
 
   if (req.body.openDt) {
@@ -37,18 +37,37 @@ router.post('/search', async function(req, res) {
   }
 
   if (req.body.genre) {
-    let genres = []
-    for (g of req.body.genre) {
-      genres.push({ genres: g })
-    }
+    genres = [{ genres: req.body.genre }]
 
     movie_title = movie_title
-      .or({ genres: genres })
+      .or(genres)
     movie_actors = movie_actors
-      .or({ genres: genres })
+      .or(genres)
     movie_directors = movie_directors
       .or(genres)
   }
+
+  if (req.body.rating) {
+    movie_title = movie_title
+      .gt('score', req.body.rating)
+    movie_actors = movie_actors
+      .gt('score', req.body.rating)
+    movie_directors = movie_directors
+      .gt('score', req.body.rating)
+  }
+
+  if (req.body.runingTime) {
+    movie_title = movie_title
+      .lt('runningTime', req.body.runingTime)
+    movie_actors = movie_actors
+      .lt('runningTime', req.body.runingTime)
+    movie_directors = movie_directors
+      .lt('runningTime', req.body.runingTime)
+  }
+
+  movie_title = await movie_title
+  movie_actors = await movie_actors
+  movie_directors = await movie_directors
 
   result = {
     movie_title: movie_title,
@@ -56,8 +75,11 @@ router.post('/search', async function(req, res) {
     movie_directors: movie_directors
   }
 
-  res.send(req.body.keyword)
+  res.json({ result: result })
 })
+
+
+
 
 router.post('/', function(req, res) {
   // console.log('1111111111')
@@ -67,26 +89,20 @@ router.post('/', function(req, res) {
       res.send(movie)
     })
     .catch((err) => res.send({ message: 'error' }))
-    // let movie = new Movie()
-    // movie.title = req.query.title
-    // movie.score = req.query.score
-    // movie.actors = req.query.actors
-    // movie.description = req.query.description
-    // movie.genres = req.query.genres
-    // movie.like_users = req.query.like_users
-    // movie.reviews = req.query.reviews
-
-  // console.log(movie)
-  // movie.save(function(err) {
-  //   if (err) {
-  //     console.log(err)
-  //     res.status(400).json({ result: 'error' })
-  //     return
-  //   }
-
-  //   res.status(200).json({ result: 1 })
-  // })
 })
+
+
+router.post('/reviews', async function(req, res) {
+  const aa = Movie.findOne({ name: req.body.name })
+  const temp = {
+    email: '',
+    rate: '',
+    content: ''
+  }
+  aa.reviews.push(temp)
+  aa.save()
+})
+
 
 // router.put('/:movie_id', function(req, res){
 //   Movie.findOne({ _id: req.params.movie_id}, {$set: req.query})
