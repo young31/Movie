@@ -11,7 +11,8 @@
 
     <input type="text" v-model="user.u">  <!-- 되는지 모르지만 이런 식으로 입력 받을 수 있게 -->
    
-    <button @click="update"></button>
+    <button @click="update">변경하기</button>
+    <button @click="remove">탈퇴하기</button>
     </b-form>
 
     <!-- 회원가입 폼 참조 -->
@@ -32,6 +33,10 @@ export default {
     update() {
       const target = this.user.email
       axios.put('/target', user)
+    },
+    remove() {
+      const target = this.user.email
+      axios.delete(`/${target}`)
     }
   }
 }

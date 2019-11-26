@@ -78,6 +78,10 @@ router.get('/:email', async function(req, res) {
 })
 
 
+// 관련하여 인증관련 문제 고찰
+//// 유저 정보에 로그인할 때마다 토큰 갱신 => 요청 들어올 경우 유저 디비에 토큰 값하고 들어온 토큰 값 비교
+
+// 회원정보 수정
 router.put('/:email', function(req, res) { // 본인 인증여부 미구현
   User.findOneAndUpdate({ email: req.body.email }, { $set: req.body }, function(err, result) {
     if (err) { res.status(500).json({ message: "connect failed" }) }
@@ -85,6 +89,7 @@ router.put('/:email', function(req, res) { // 본인 인증여부 미구현
   })
 })
 
+// 회원정보 삭제
 router.delete('/:email', function(req, res) {
   User.remove({ email: req.params.email }, function(err, result) {
     if (err) { res.status(500).json({ message: 'connect failed' }) }
