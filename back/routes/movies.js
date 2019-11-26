@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Movie = require('../models/movies')
+const axios = require('axios')
 
 router.get('/', function(req, res, next) {
   Movie.find({})
@@ -85,18 +86,31 @@ router.post('/search', async function(req, res) {
 router.post('/:index/review', async function(req, res) {
   // 유저정보와 평점, 리뷰정보와 해당 영화아이디(index)가 넘어와 야됨
   // 영화정보는 위에서 보는 것 처럼 넘겨주면 됨
+  // user 라우트에 함수 추가
   let movie = await Movie.findOne({ index: req.params.index })
-  console.log(movie)
-  console.log(req.params)
+    // console.log(movie)
+    // console.log(req.params)
   const review = { // user, rate, content
-    user: req.body.user,
+    email: req.body.email,
     rate: req.body.rate,
     content: req.body.content
   }
 
   movie.reviews.push(review)
   movie.save()
-  console.log(movie)
+
+  // 유저에 보냄
+  delete review.email
+  review.index = req.params.index
+
+  console.log(review)
+
+  console.log(req.body.email)
+  const url = `127.0.0.1:3000/user/${req.body.email}/reviews`
+  console.log(url)
+  const aaa = await axios.post(url, review)
+  console.log(aaa)
+
   res.send('successfully saved')
 })
 
@@ -117,18 +131,22 @@ router.post('/:index/like', async function(req, res) { // 유저정보(email)와
   } else {
     movie.like_users.push(req.body.email)
   }
+
+  movie.save()
+
+  res.send('successfully saved')
 })
 
-router.post('/reviews', async function(req, res) {
-  const aa = Movie.findOne({ name: req.body.name })
-  const temp = {
-    email: '',
-    rate: '',
-    content: ''
-  }
-  aa.reviews.push(temp)
-  aa.save()
-})
+// router.post('/reviews', async function(req, res) {
+//   const aa = Movie.findOne({ name: req.body.name })
+//   const temp = {
+//     email: '',
+//     rate: '',
+//     content: ''
+//   }
+//   aa.reviews.push(temp)
+//   aa.save()
+// })
 
 
 // router.put('/:movie_id', function(req, res){

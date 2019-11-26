@@ -22,6 +22,7 @@ const userSchema = mongoose.Schema({
   },
   master: {
     type: Boolean,
+    default: false
   },
   like_movies: {
     type: Array

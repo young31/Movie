@@ -61,6 +61,21 @@ router.post('/login', async function(req, res) {
   }
 })
 
+router.post('/:email/reviews', async function(req, res) {
+  // 성공여부 확인 안해봄
+  let user = await User.findOne({ email: req.params.email })
+  console.log(user)
+  let review = req.body
+  console.log(review)
+
+  // delete review.email
+  // review.index = req.body.index
+
+  user.reviews.push(review)
+  user.save()
+  res.send('aa')
+})
+
 
 // user.userId = req.body.userId
 // user.password = req.query.password
