@@ -80,12 +80,8 @@ router.post('/search', async function(req, res) {
   if (req.body.keyword) {
     let target = req.body.keyword.split(' ').join('')
 
-    // target.replace('', ' ')
     // target = Array.from(target).join(' ')
     console.log(target)
-      // target
-      // console.log(target)
-      // { title: { $regex: target, $options: "i" } }
     const aaa = await Movie.find({ director_name: { $regex: target, $options: "i" } })
       // console.log(aaa)
     movie_title = Movie.find({ title_trim: { $regex: target, $options: "ix" } })
@@ -155,8 +151,6 @@ router.post('/:index/review', async function(req, res) {
   // 영화정보는 위에서 보는 것 처럼 넘겨주면 됨
   // user 라우트에 함수 추가
   let movie = await Movie.findOne({ index: req.params.index })
-    // console.log(movie)
-    // console.log(req.params)
   const review = { // user, rate, content
     email: req.body.email,
     rate: req.body.rate,
