@@ -1,6 +1,5 @@
 <template>
   <div>
-    <b-form>
     <p>userId: {{ user.userId }}</p>
     <p>email: {{ user.email }}</p>
     <p>password: blank</p> <!-- 마스킹이나 블랭크 -->
@@ -13,7 +12,6 @@
    
     <button @click="update">변경하기</button>
     <button @click="remove">탈퇴하기</button>
-    </b-form>
 
     <!-- 회원가입 폼 참조 -->
   </div>
@@ -32,7 +30,7 @@ export default {
   methods: {
     update() {
       const target = this.user.email
-      axios.put('/target', user)
+      axios.put(`/${target}`, user)
     },
     remove() {
       const target = this.user.email

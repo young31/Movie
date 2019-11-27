@@ -6,15 +6,22 @@ function replaceAll(str, search, replace) {
   return str.split(search).join(replace)
 }
 
-const get_delay = async () => {
+const get_delay = async() => {
   await delay(200)
 }
 
+<<<<<<< HEAD
 const crawling = async () => {
   for ( let i = 139521; i < 190561; i++ ) {
   // for ( let i = 136873; i < 136874; i++ ) {
+=======
+const crawling = async() => {
+  for (let i = 73510; i < 190561; i++) {
+    // for ( let i = 136873; i < 136874; i++ ) {
+>>>>>>> 058753692b86f0ca2935d1413f21044c389992fc
     console.log(i)
-    try { get_delay()
+    try {
+      get_delay()
     } catch (e) {
       console.log(e)
     }
@@ -34,10 +41,10 @@ const crawling = async () => {
     score = $score.children('div:nth-child(5)').children('div:nth-child(2)').children('div.score_area').children('div.netizen_score').children('div').children('div').children('em').text()
     directors = []
     actors = []
-    // console.log($staffs.children('li').length)
+      // console.log($staffs.children('li').length)
 
-    for ( let i = 1; i <= $staffs.children('li').length; i++ ) {
-      if ( $staffs.children(`li:nth-child(${i})`).children('dl').children('dt').text() === '감독' ) {
+    for (let i = 1; i <= $staffs.children('li').length; i++) {
+      if ($staffs.children(`li:nth-child(${i})`).children('dl').children('dt').text() === '감독') {
         const staff = {
           name: $staffs.children(`li:nth-child(${i})`).children('a.tx_people').text(),
           img: $staffs.children(`li:nth-child(${i})`).children('a.thumb_people').children('img').attr('src')
@@ -52,34 +59,34 @@ const crawling = async () => {
       }
     }
     description = $description.children('p').text()
-    // posterUrl = $posterUrl.children('div.poster').children('a').children('img').attr('src')
+      // posterUrl = $posterUrl.children('div.poster').children('a').children('img').attr('src')
     posterUrl = `https://movie.naver.com/movie/bi/mi/photoViewPopup.nhn?movieCode=${i}`
     $genres = $genre.children('span:nth-child(1)')
-    
+
     const genres = []
-    for ( let i = 1; i <= $genres.children('a').length; i++ ) {
+    for (let i = 1; i <= $genres.children('a').length; i++) {
       genres.push($genres.children(`a:nth-child(${i})`).text())
     }
     runningTime = $runningTime.text()
-    if ( title === '' ) {
+    if (title === '') {
       continue
     }
     preview = 'https:/' + $preview.attr('href')
     let openDt = ''
-    for ( let i = 1; i <= $openDt.children('a').length; i++ ) {
+    for (let i = 1; i <= $openDt.children('a').length; i++) {
       openDt = openDt + $openDt.children(`a:nth-child(${i})`).text()
     }
     // openDt = openDt.replace('.', '-')
     openDt = replaceAll(openDt, '.', '-').trim()
-    // console.log(title)
-    // console.log(score)
-    // console.log(directors)
-    // console.log(actors)
-    // console.log(description)
-    // console.log(posterUrl)
-    // console.log(genres)
-    // console.log(runningTime)
-    // console.log(preview)
+      // console.log(title)
+      // console.log(score)
+      // console.log(directors)
+      // console.log(actors)
+      // console.log(description)
+      // console.log(posterUrl)
+      // console.log(genres)
+      // console.log(runningTime)
+      // console.log(preview)
 
     // document.querySelector(" a:nth-child(1)")
 
@@ -101,7 +108,7 @@ const crawling = async () => {
       .then(response => {
         console.log(response)
       })
-      .catch(error =>{
+      .catch(error => {
         console.error(error)
       })
 
@@ -111,7 +118,8 @@ const crawling = async () => {
   }
 }
 
-try { crawling()
+try {
+  crawling()
 } catch (e) {
   console.log(e)
 }
