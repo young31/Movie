@@ -12,10 +12,13 @@ const movieSchema = new Schema({
     unique: true
   },
   title: String,
+  title_trim: String,
   openDt: Date,
   score: { type: Float },
   directors: Array,
+  director_name: Array,
   actors: Array,
+  actors_name: Array,
   description: String,
   posterUrl: String,
   genres: Array,

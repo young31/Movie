@@ -2,10 +2,47 @@ const express = require('express')
 const router = express.Router()
 const Movie = require('../models/movies')
 const User = require('../models/users')
+const axios = require('axios')
+const cheerio = require('cheerio')
+const delay = require('delay')
+
+// let data = await Movie.find({})
+// for (i = 14847; i < data.length; i++) {
+//   const html = await axios.get(data[i].posterUrl)
+//   const $ = cheerio.load(html.data);
+//   const imgSrc = $('#targetImage').attr('src')
+//   data[i].posterUrl = imgSrc
+//   data[i].save()
+//   console.log(data[i].index)
+//     // await delay(200)
+
+// 이름만들기
+// let movies = await Movie.find()
+// for (movie of movies) {
+//   movie.acotrs_name = []
+//   try {
+//     for (a of movie.actors) {
+//       let c = a.name.split(' ').join('')
+//       movie.actors_name.push(c)
+//     }
+//   } catch (e) {
+//     res.send('error')
+//   }
+
+router.get('/test', async function(req, res) {
+  res.send('good')
+})
+
+
+// for (d of data) {
+//   d.title_trim = d.title.split(' ').join('')
+//   console.log(d.title.split(' ').join(''))
+//   d.save()
+// }
 
 // 영화 전체 조회
 router.get('/', function(req, res, next) {
-  Movie.find({})
+  Movie.find({}).distinct('director_name')
     .then((movies) => {
       if (!movies.length) {
         return res.status(404).send({ message: 'error' })
@@ -35,25 +72,34 @@ router.get('/:index', async function(req, res) {
 // 조건 만족하는 영화목록 조회
 router.post('/search', async function(req, res) {
   let movie_title
-  let movie_actors
-  let movie_directors
+  let movie_actor
+  let movie_director
   let result
   let genres = []
 
   if (req.body.keyword) {
-    movie_title = Movie.find({ title: { $regex: req.body.keyword, $options: "i" } })
-    movie_actors = Movie.find({ actors: { $in: req.body.keyword } })
-    movie_directors = Movie.find({ directors: { $in: req.body.keyword } })
-  }
+    let target = req.body.keyword.split(' ').join('')
 
+    // target.replace('', ' ')
+    // target = Array.from(target).join(' ')
+    console.log(target)
+      // target
+      // console.log(target)
+      // { title: { $regex: target, $options: "i" } }
+    const aaa = await Movie.find({ director_name: { $regex: target, $options: "i" } })
+      // console.log(aaa)
+    movie_title = Movie.find({ title_trim: { $regex: target, $options: "ix" } })
+    movie_actor = Movie.find({ actors_name: { $in: target } })
+    movie_director = Movie.find({ director_name: { $in: target } })
+  }
   if (req.body.openDt) {
     movie_title = movie_title
       .gt('openDt', req.body.openDt.from)
       .lt('openDt', req.body.openDt.to)
-    movie_actors = movie_actors
+    movie_actor = movie_actor
       .gt('openDt', req.body.openDt.from)
       .lt('openDt', req.body.openDt.to)
-    movie_directors = movie_directors
+    movie_director = movie_director
       .gt('openDt', req.body.openDt.from)
       .lt('openDt', req.body.openDt.to)
   }
@@ -65,33 +111,33 @@ router.post('/search', async function(req, res) {
 
     movie_title = movie_title
       .or(genres)
-    movie_actors = movie_actors
+    movie_actor = movie_actor
       .or(genres)
-    movie_directors = movie_directors
+    movie_director = movie_director
       .or(genres)
   }
 
   if (req.body.rating) {
     movie_title = movie_title
       .gt('score', req.body.rating)
-    movie_actors = movie_actors
+    movie_actor = movie_actor
       .gt('score', req.body.rating)
-    movie_directors = movie_directors
+    movie_director = movie_director
       .gt('score', req.body.rating)
   }
 
   if (req.body.runingTime) {
     movie_title = movie_title
       .lt('runningTime', req.body.runingTime)
-    movie_actors = movie_actors
+    movie_actor = movie_actor
       .lt('runningTime', req.body.runingTime)
-    movie_directors = movie_directors
+    movie_director = movie_director
       .lt('runningTime', req.body.runingTime)
   }
 
   movie_title = await movie_title
-  movie_actors = await movie_actors
-  movie_directors = await movie_directors
+  movie_actor = await movie_actor
+  movie_director = await movie_director
 
   result = {
     movie_title: movie_title,
@@ -121,7 +167,11 @@ router.post('/:index/review', async function(req, res) {
   movie.save()
 
   let user = await User.findOne({ email: req.body.email })
-  user.reviews.push(req.params.index) // 수정사항 => 평점도 함께 넣어서 내가 높은 점수 준 영화들 보기?
+  const user_rate = {
+    rate: req.body.rate,
+    index: req.params.index
+  }
+  user.reviews.push(user_rate)
   user.save()
   res.send('successfully saved')
 })
