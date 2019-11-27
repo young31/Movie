@@ -8,7 +8,9 @@ export default new Vuex.Store({
   // 상태 (data)
   state: {
     token: null,
-    loginState: 0
+    loginState: 0,
+    searchMovieResuts: [],
+    movieDetail: null
   },
   // computed
   getters: {
@@ -24,6 +26,9 @@ export default new Vuex.Store({
     },
     userId(state) {
       return state.token ? jwtDecode(state.token).user_id : null
+    },
+    getResult(state) {
+      return state.searchMovieResuts ? true : false
     }
   },
   // 상태를 변경하는 함수
@@ -33,6 +38,12 @@ export default new Vuex.Store({
     },
     setLoginState(state, loginState) {
       state.loginState = loginState
+    },
+    setSearchMovieResuts(state, results) {
+      state.searchMovieResuts = results
+    },
+    setMovieDetail(state, movie) {
+      state.movieDetail = movie
     }
   },
   // method
@@ -51,6 +62,12 @@ export default new Vuex.Store({
     },
     signupClick(context, loginState) {
       context.commit('setLoginState', loginState)
+    },
+    searchMovie(context, results) {
+      context.commit('setSearchMovieResuts', results)
+    },
+    goMovieDetail(context, movie) {
+      context.commit('setMovieDetail', movie)
     }
   },
 })

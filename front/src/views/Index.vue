@@ -9,29 +9,68 @@
     <div v-else>
       <SearchBar />
     </div>
+
+    <div v-if="isLoggedIn && movies.length">
+      <!-- 최신작 -->
+      <flickity ref="flickity" :options="flickityOptions">
+        <b-container v-for="(i, i_idx) in idx" :key="i_idx" class="bv-example-row">
+          <b-row class="text-center">
+            <b-col v-for="(movie, moive_idx) in movies.slice(0 + i, 5 + i)" :key="moive_idx">
+              <MovieList :movie="movie" />
+            </b-col>
+          </b-row>
+
+          <b-row class="text-center">
+            <b-col v-for="(movie, moive_idx) in movies.slice(5 + i, 10 + i)" :key="moive_idx">
+              <MovieList :movie="movie" />
+            </b-col>
+          </b-row>
+        </b-container>
+      </flickity>
+    </div>
   </div>
 </template>
 
 <script>
-import LoginForm from '@/components/index/LoginForm'
-import SignupForm from '@/components/index/SignupForm'
-import SearchBar from '@/components/index/SearchBar'
+import LoginForm from "@/components/index/LoginForm";
+import SignupForm from "@/components/index/SignupForm";
+import SearchBar from "@/components/index/SearchBar";
+import MovieList from "@/components/index/MovieList";
+import Flickity from "vue-flickity";
 
 export default {
-  name: 'Index',
+  name: "Index",
+  data() {
+    return {
+      idx: [0, 10, 20, 30, 40],
+      flickityOptions: {
+        initialIndex: 0,
+        prevNextButtons: false,
+        pageDots: false,
+        wrapAround: true
+      }
+    };
+  },
   components: {
     LoginForm,
     SignupForm,
-    SearchBar
+    SearchBar,
+    MovieList,
+    Flickity
   },
   computed: {
     loginState() {
-      return this.$store.state.loginState
+      return this.$store.state.loginState;
+    },
+    isLoggedIn() {
+      return this.$store.getters.isLoggedIn;
     }
+  },
+  props: {
+    movies: Array
   }
-}
+};
 </script>
 
 <style>
-
 </style>

@@ -40,7 +40,6 @@ export default {
           .then(response => {
             if (response.data.message !== 'error') {
               this.cancelClick()
-              // router.push('/')
             }
             this.$session.start()
             this.$session.set('jwt', response.data.message)

@@ -1,22 +1,23 @@
 <template>
   <div class="movie">
     <h1>영화홈</h1>
-    <!-- <SearchBar /> -->
-    <MovieList />
+    <h2>{{ getMovie.title }}</h2>
     <Reviews />
   </div>
 </template>
 
 <script>
-import MovieList from '@/components/movie/MovieList'
-// import SearchBar from '@/components/movie/SearchBar'
 import Reviews from '@/components/movie/Reviews'
 
 export default {
   name: 'Movie',
   components: {
-    MovieList,
     Reviews,
+  },
+  computed: {
+    getMovie() {
+      return this.$store.state.movieDetail;
+    },
   }
 }
 </script>

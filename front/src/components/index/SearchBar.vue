@@ -1,8 +1,6 @@
 <template>
   <div class="searchBar">
-    <!-- <input type="text" v-model="search_info.keyword" @keyup.enter="click" />
-    <button @click="click">검색</button>-->
-    <b-form-input size="sm" class="mr-sm-2" placeholder="Search" @keyup.enter="click"></b-form-input>
+    <b-form-input type="text" size="sm" class="mr-sm-2" placeholder="Search" v-model="search_info.keyword" @keyup.enter="click"></b-form-input>
     <b-button size="sm" class="my-2 my-sm-0" type="submit" @click="click">검색</b-button>
     <div v-show-slide="featuresOpen" class="features">
       <b-form-checkbox
@@ -27,6 +25,7 @@
 
 <script>
 import axios from "axios";
+import router from '@/router';
 
 export default {
   name: "SearchBar",
@@ -59,13 +58,13 @@ export default {
         return genre.contained;
       });
       this.search_info.genres = new_genres;
-
       const SERVER_IP = process.env.VUE_APP_SERVER_IP;
-
-      axios
-        .post(SERVER_IP + "/api/movies/search", this.search_info)
+      console.log(this.search_info)
+      axios.post(SERVER_IP + "/api/movies/search", this.search_info)
         .then(response => {
-          console.log(response);
+          console.log(response.data.result);
+          this.$store.dispatch('searchMovie', response.data.result)
+          router.push('/result')
         })
         .catch(error => {
           console.error(error);
@@ -74,10 +73,6 @@ export default {
     toggleFeatures() {
       this.featuresOpen = !this.featuresOpen;
     }
-  },
-  async mounted() {
-    //   const SERVER_IP = precess.env.VUE_APP_SERVER_IP
-    //   axios.get(SERVER_IP + '/api/genre')
   }
 };
 </script>

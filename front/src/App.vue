@@ -23,18 +23,20 @@
       </b-navbar>
     </div>
     <div class="container">
-      <router-view />
+      <router-view :movies="movies" />
     </div>
   </div>
 </template>
 
 <script>
 import router from '@/router'
+import axios from 'axios'
 
 export default {
   name: "app",
   data() {
     return {
+      movies: []
     }
   },
   computed: {
@@ -54,13 +56,24 @@ export default {
     },
     signupClick() {
       this.$store.dispatch('loginClick', 2)
+    },
+    cancelClick() {
+      this.$store.dispatch('loginClick', 0)
     }
   },
-  mounted() {
+  async created() {
+    // 로그인 유지
     if (this.$session.has("jwt")) {
       const token = this.$session.get("jwt");
       this.$store.dispatch("login", token);
     }
+    
+    // 영화 데이터 불러오기
+    const SERVER_IP = process.env.VUE_APP_SERVER_IP
+    const movieResponse = await axios.get(SERVER_IP + '/api/movies')
+    this.movies = movieResponse.data
+    console.log(this.movies)
+
   },
 };
 </script>
