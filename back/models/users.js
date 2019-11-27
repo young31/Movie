@@ -3,6 +3,7 @@ const validator = require('validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const Schema = mongoose.Schema
+const Float = require('mongoose-float').loadType(mongoose)
 
 const userSchema = new Schema({
   userId: {
@@ -28,6 +29,9 @@ const userSchema = new Schema({
     type: Array
   },
   reviews: {
+    type: Array
+  },
+  rate: {
     type: Array
   }
   // tokens: [{

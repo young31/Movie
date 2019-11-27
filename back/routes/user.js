@@ -74,9 +74,13 @@ router.get('/:email', async function(req, res) {
   if (user) {
     res.json(user)
   } else { res.status(404).json({ message: 'fail' }) }
-
 })
 
+// 아이디로 유저 조회
+router.post('/id', async function(req, res) {
+  const users = await User.find({ userId: req.body.userId }).select('userId email')
+  res.json({ result: users })
+})
 
 // 관련하여 인증관련 문제 고찰
 //// 유저 정보에 로그인할 때마다 토큰 갱신 => 요청 들어올 경우 유저 디비에 토큰 값하고 들어온 토큰 값 비교

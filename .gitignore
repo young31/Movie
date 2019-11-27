@@ -3,3 +3,4 @@ back/models/Users.js
 .firebase/
 .firebaserc
 firebase.json
+movies.json
