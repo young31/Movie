@@ -10,15 +10,9 @@ const get_delay = async() => {
   await delay(200)
 }
 
-<<<<<<< HEAD
-const crawling = async () => {
-  for ( let i = 139521; i < 190561; i++ ) {
-  // for ( let i = 136873; i < 136874; i++ ) {
-=======
 const crawling = async() => {
-  for (let i = 73510; i < 190561; i++) {
+  for (let i = 139521; i < 190561; i++) {
     // for ( let i = 136873; i < 136874; i++ ) {
->>>>>>> 058753692b86f0ca2935d1413f21044c389992fc
     console.log(i)
     try {
       get_delay()
