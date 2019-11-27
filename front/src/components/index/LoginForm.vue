@@ -44,6 +44,7 @@ export default {
             this.$session.start()
             this.$session.set('jwt', response.data.message)
             this.$store.dispatch('login', response.data.message)
+            this.$store.dispatch('getUserInfo', this.credentials.email)
             console.log(response.data.message)
           })
           .catch(error =>{

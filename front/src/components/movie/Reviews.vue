@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>reviews</h1>
-    <input type="text" @keydown:enter="create_review"> <!-- v-model="review.rating" -->
+    <b-form-input type="text" size="sm" class="mr-sm-2" placeholder="review" v-model="review_info.content" @keyup.enter="create_review"></b-form-input>
     <div v-for="review in reviews" :key="review.user ">
       <span>{{ review.user }} // {{ review.rating }}</span>
       <p>{{ review.content }}</p>
@@ -13,40 +13,29 @@
 import axios from 'axios'
 export default {
   name: "Reviews",
-  // props: {
-  //   reviews: {
-  //     type: Array
-  //   }
-  // },
+  data() {
+    return {
+      review_info: {
+        email: '',
+        rate: null,
+        content: ''
+      }
+    }
+  },
   methods: {
     create_review() {
       const SERVER_IP = process.env.VUE_APP_SERVER_IP
-      axios.post(SERVER_IP + '/api/movies', {
+      axios.post(SERVER_IP + `/api/movies/${this.getMovie.index}/review`, {
         // options
       })
     }
   },
-  data() {
-    return {
-      reviews: [
-        {
-          user: "aaa",
-          content: "재미져요",
-          rating: 10
-        },
-        {
-          user: "bbb",
-          content: "재미져요",
-          rating: 5
-        },
-        {
-          user: "ccc",
-          content: "재미져요",
-          rating: 3
-        }
-      ]
-    }
+  computed: {
+    getMovie() {
+      return this.$store.state.movieDetail;
+    },
   }
+  
 }
 </script>
 

@@ -10,7 +10,9 @@ export default new Vuex.Store({
     token: null,
     loginState: 0,
     searchMovieResuts: [],
-    movieDetail: null
+    movieDetail: null,
+    user: null,
+    findUsers: null,
   },
   // computed
   getters: {
@@ -24,11 +26,14 @@ export default new Vuex.Store({
         }
       }
     },
-    userId(state) {
-      return state.token ? jwtDecode(state.token).user_id : null
+    myEmail(state) {
+      return state.token ? jwtDecode(state.token).email : null
     },
     getResult(state) {
       return state.searchMovieResuts ? true : false
+    },
+    getUsers(state) {
+      return state.findUsers ? true : false 
     }
   },
   // 상태를 변경하는 함수
@@ -44,6 +49,12 @@ export default new Vuex.Store({
     },
     setMovieDetail(state, movie) {
       state.movieDetail = movie
+    },
+    setUser(state, userInfo) {
+      state.user = userInfo
+    },
+    setFindUsers(state, findUserInfo) {
+      state.findUsers = findUserInfo
     }
   },
   // method
@@ -68,6 +79,12 @@ export default new Vuex.Store({
     },
     goMovieDetail(context, movie) {
       context.commit('setMovieDetail', movie)
+    },
+    getUserInfo(context, userInfo) {
+      context.commit('setUser', userInfo)
+    },
+    searchUsers(context, searchUsersInfo) {
+      context.commit('setFindUsers', searchUsersInfo)
     }
   },
 })

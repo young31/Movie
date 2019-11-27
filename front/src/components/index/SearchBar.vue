@@ -1,8 +1,19 @@
 <template>
-  <div class="searchBar">
-    <b-form-input type="text" size="sm" class="mr-sm-2" placeholder="Search" v-model="search_info.keyword" @keyup.enter="click"></b-form-input>
-    <b-button size="sm" class="my-2 my-sm-0" type="submit" @click="click">검색</b-button>
+  <div class="searchBar container" style="text-align: center">
+    <div class="input-group mb-3">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="영화, 배우, 감독, 유저를 검색하세요."
+        v-model="searchInfo.keyword"
+        @keyup.enter="click"
+      />
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button" id="button-addon2">검색</button>
+      </div>
+    </div>
     <div v-show-slide="featuresOpen" class="features">
+      <!-- 장르 -->
       <b-form-checkbox
         v-for="(genre, idx) in genres"
         :key="idx"
@@ -13,26 +24,29 @@
         button-variant="info"
       >{{ genre.name }}</b-form-checkbox>
       <br />
-      <input type="date" /> -
-      <input type="date" />
+      <!-- 개봉연도 -->
+      <input v-model="searchInfo.openDt.from" type="date" /> -
+      <input v-model="searchInfo.openDt.to" type="date" />
+      <!-- 평점 -->
+      <input v-model="searchInfo.rating" type="number" />
     </div>
     <button
       @click="toggleFeatures"
-      class="toggle-features"
-    >{{ featuresOpen ? 'Hide Features' : 'View Features' }}</button>
+      class="toggle-features btn btn-light mb-5"
+    >{{ featuresOpen ? '접어두기' : '상세보기' }}</button>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import router from '@/router';
+import router from "@/router";
 
 export default {
   name: "SearchBar",
   components: {},
   data() {
     return {
-      search_info: {
+      searchInfo: {
         keyword: "",
         genres: [],
         rating: 0,
@@ -57,18 +71,22 @@ export default {
       const new_genres = this.genres.filter(genre => {
         return genre.contained;
       });
-      this.search_info.genres = new_genres;
+      this.searchInfo.genres = new_genres;
       const SERVER_IP = process.env.VUE_APP_SERVER_IP;
-      console.log(this.search_info)
-      axios.post(SERVER_IP + "/api/movies/search", this.search_info)
+      // console.log(this.searchInfo)
+      // 영화 검색
+      axios
+        .post(SERVER_IP + "/api/movies/search", this.searchInfo)
         .then(response => {
           console.log(response.data.result);
-          this.$store.dispatch('searchMovie', response.data.result)
-          router.push('/result')
+          this.$store.dispatch("searchMovie", response.data.result);
+          router.push("/result");
         })
         .catch(error => {
           console.error(error);
         });
+
+      // 유저검색
     },
     toggleFeatures() {
       this.featuresOpen = !this.featuresOpen;

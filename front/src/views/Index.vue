@@ -10,7 +10,7 @@
       <SearchBar />
     </div>
 
-    <div v-if="isLoggedIn && movies.length">
+    <div v-if="isLoggedIn && movies.length" class="mx-3">
       <!-- 최신작 -->
       <flickity ref="flickity" :options="flickityOptions">
         <b-container v-for="(i, i_idx) in idx" :key="i_idx" class="bv-example-row">
@@ -20,11 +20,11 @@
             </b-col>
           </b-row>
 
-          <b-row class="text-center">
+          <!-- <b-row class="text-center">
             <b-col v-for="(movie, moive_idx) in movies.slice(5 + i, 10 + i)" :key="moive_idx">
               <MovieList :movie="movie" />
             </b-col>
-          </b-row>
+          </b-row> -->
         </b-container>
       </flickity>
     </div>
@@ -42,7 +42,7 @@ export default {
   name: "Index",
   data() {
     return {
-      idx: [0, 10, 20, 30, 40],
+      idx: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45],
       flickityOptions: {
         initialIndex: 0,
         prevNextButtons: false,

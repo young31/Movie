@@ -1,54 +1,74 @@
 <template>
   <div v-if="getResult">
     <h2>검색 결과</h2>
-    <br>
-    <h4>영화 제목 관련</h4>
+    <br />
     <div v-if="getMovies.movie_title.length">
+      <h4>영화명</h4>
       <flickity ref="flickity" :options="flickityOptions">
-      <b-container v-for="(i, i_idx) in idx.movie_title" :key="i_idx" class="bv-example-row">
-        <b-row class="text-center">
-          <b-col cols="2" v-for="(movie, moive_idx) in getMovies.movie_title" :key="moive_idx">
-            <MovieList :movie="movie" />
-          </b-col>
-        </b-row>
-      </b-container>
-    </flickity>
-    </div>
-    <div v-else>
-      <p>관련 영화가 없습니다.</p>
-    </div>
-    
-    <h4>배우 관련</h4>
-    <div v-if="getMovies.movie_actors.length">
-      <flickity ref="flickity" :options="flickityOptions">
-      <b-container v-for="(i, i_idx) in idx.movie_actors" :key="i_idx" class="bv-example-row">
-        <b-row class="text-center">
-          <b-col cols="2" v-for="(movie, moive_idx) in getMovies.movie_actors" :key="moive_idx">
-            <MovieList :movie="movie" />
-          </b-col>
-        </b-row>
-      </b-container>
-    </flickity>
-    </div>
-    <div v-else>
-      <p>관련 영화가 없습니다.</p>
+        <b-container v-for="(i, i_idx) in idx.movie_title" :key="i_idx" class="bv-example-row">
+          <b-row class="text-center">
+            <b-col cols="2" v-for="(movie, moive_idx) in getMovies.movie_title" :key="moive_idx">
+              <MovieList :movie="movie" />
+            </b-col>
+          </b-row>
+        </b-container>
+      </flickity>
     </div>
 
-    <h4>감독 관련</h4>
-    <div v-if="getMovies.movie_directors.length">
+    
+    <div v-if="getMovies.movie_actors.length">
+      <h4>배우</h4>
       <flickity ref="flickity" :options="flickityOptions">
-      <b-container v-for="(i, i_idx) in idx.movie_directors" :key="i_idx" class="bv-example-row">
-        <b-row class="text-center">
-          <b-col cols="2" v-for="(movie, moive_idx) in getMovies.movie_directors" :key="moive_idx">
-            <MovieList :movie="movie" />
-          </b-col>
-        </b-row>
-      </b-container>
-    </flickity>
+        <b-container v-for="(i, i_idx) in idx.movie_actors" :key="i_idx" class="bv-example-row">
+          <b-row class="text-center">
+            <b-col cols="2" v-for="(movie, moive_idx) in getMovies.movie_actors" :key="moive_idx">
+              <MovieList :movie="movie" />
+            </b-col>
+          </b-row>
+        </b-container>
+      </flickity>
     </div>
-    <div v-else>
-      <p>관련 영화가 없습니다.</p>
+
+    
+    <div v-if="getMovies.movie_directors.length">
+      <h4>감독</h4>
+      <flickity ref="flickity" :options="flickityOptions">
+        <b-container v-for="(i, i_idx) in idx.movie_directors" :key="i_idx" class="bv-example-row">
+          <b-row class="text-center">
+            <b-col
+              cols="2"
+              v-for="(movie, moive_idx) in getMovies.movie_directors"
+              :key="moive_idx"
+            >
+              <MovieList :movie="movie" />
+            </b-col>
+          </b-row>
+        </b-container>
+      </flickity>
     </div>
+
+
+    <div v-if="getMovies.movie_directors.length">
+      <h4>유저</h4>
+      <flickity ref="flickity" :options="flickityOptions">
+        <b-container v-for="(i, i_idx) in idx.movie_directors" :key="i_idx" class="bv-example-row">
+          <b-row class="text-center">
+            <b-col
+              cols="2"
+              v-for="(movie, moive_idx) in getMovies.movie_directors"
+              :key="moive_idx"
+            >
+              <MovieList :movie="movie" />
+            </b-col>
+          </b-row>
+        </b-container>
+      </flickity>
+    </div>
+
+
+  </div>
+  <div v-else>
+    <p>관련 영화가 없습니다.</p>
   </div>
 </template>
 
@@ -79,14 +99,32 @@ export default {
   },
   methods: {
     make_idx() {
-      for (let ii = 0; ii < parseInt(this.getMovies.movie_title.length / 6) + Math.ceil((this.getMovies.movie_title.length % 6) / 6); ii++) {
-        this.idx.movie_title.push(6*ii)
+      for (
+        let ii = 0;
+        ii <
+        parseInt(this.getMovies.movie_title.length / 6) +
+          Math.ceil((this.getMovies.movie_title.length % 6) / 6);
+        ii++
+      ) {
+        this.idx.movie_title.push(6 * ii);
       }
-      for (let ii = 0; ii < parseInt(this.getMovies.movie_actors.length / 6) + Math.ceil((this.getMovies.movie_actors.length % 6) / 6); ii++) {
-        this.idx.movie_actors.push(6*ii)
+      for (
+        let ii = 0;
+        ii <
+        parseInt(this.getMovies.movie_actors.length / 6) +
+          Math.ceil((this.getMovies.movie_actors.length % 6) / 6);
+        ii++
+      ) {
+        this.idx.movie_actors.push(6 * ii);
       }
-      for (let ii = 0; ii < parseInt(this.getMovies.movie_directors.length / 6) + Math.ceil((this.getMovies.movie_directors.length % 6) / 6); ii++) {
-        this.idx.movie_directors.push(6*ii)
+      for (
+        let ii = 0;
+        ii <
+        parseInt(this.getMovies.movie_directors.length / 6) +
+          Math.ceil((this.getMovies.movie_directors.length % 6) / 6);
+        ii++
+      ) {
+        this.idx.movie_directors.push(6 * ii);
       }
     }
   },
@@ -99,7 +137,7 @@ export default {
     }
   },
   created() {
-    this.make_idx()
+    this.make_idx();
   }
 };
 </script>
