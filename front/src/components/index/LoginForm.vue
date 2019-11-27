@@ -42,8 +42,8 @@ export default {
               this.cancelClick()
               // router.push('/')
             }
-            // this.$session.start()
-            // this.$session.set('jwt', response.data.message)
+            this.$session.start()
+            this.$session.set('jwt', response.data.message)
             this.$store.dispatch('login', response.data.message)
             console.log(response.data.message)
           })
