@@ -5,6 +5,7 @@ const User = require('../models/users')
 const axios = require('axios')
 const cheerio = require('cheerio')
 const delay = require('delay')
+let date = require('yyyy-mm-dd')
 
 // let data = await Movie.find({})
 // for (i = 14847; i < data.length; i++) {
@@ -42,8 +43,9 @@ router.get('/test', async function(req, res) {
 
 // 영화 전체 조회
 router.get('/', function(req, res, next) {
-  Movie.find({}).distinct('director_name')
+  Movie.find({}).lt('openDt', date())
     .then((movies) => {
+      console.log(movies[0])
       if (!movies.length) {
         return res.status(404).send({ message: 'error' })
       }
@@ -153,7 +155,6 @@ router.post('/:index/review', async function(req, res) {
   let movie = await Movie.findOne({ index: req.params.index })
   const review = { // user, rate, content
     email: req.body.email,
-    rate: req.body.rate,
     content: req.body.content
   }
 
@@ -161,11 +162,11 @@ router.post('/:index/review', async function(req, res) {
   movie.save()
 
   let user = await User.findOne({ email: req.body.email })
-  const user_rate = {
-    rate: req.body.rate,
+  const user_review = {
+    content: req.body.content,
     index: req.params.index
   }
-  user.reviews.push(user_rate)
+  user.reviews.push(user_review)
   user.save()
   res.send('successfully saved')
 })
@@ -175,7 +176,6 @@ router.post('/:index/review', async function(req, res) {
 router.post('/:index/like', async function(req, res) { // 유저정보(email)와 해당 영화 id가 넘어와야 됨
   let movie = await Movie.findOne({ index: req.params.index })
   if (movie.like_users.includes(req.body.email)) {
-    // console.log(movie)
     movie.like_users.splice(movie.like_users.indexOf(req.body.email), 1)
   } else {
     movie.like_users.push(req.body.email)
@@ -195,6 +195,50 @@ router.post('/:index/like', async function(req, res) { // 유저정보(email)와
   res.send('successfully saved')
 })
 
+// 평점
+router.post('/:index/rate', async function(req, res) {
+  // 검증필요
+  let movie = await Movie.findOne({ index: req.params.index }).distinct('actors')
+  let user = await User.findOne({ email: req.body.email })
+  let rate = await Movie.findOne({ index: req.params.index }).distinct('rate')
+
+  if (rate.some(item => item.email === req.body.email)) {
+    rate.forEach(function(item) {
+      if (item.email === req.body.email) {
+        item.rate = req.body.rate
+      }
+    })
+    user.rate.forEach(function(item) {
+      if (item.index === req.params.index) {
+        item.rate = req.body.rate
+      }
+    })
+  } else {
+    rate.push({
+      email: req.body.email,
+      rate: req.body.rate
+    })
+    user.rate.push({
+      index: req.params.index,
+      rate: req.body.rate
+    })
+  }
+
+  movie.rate = rate
+  movie.save()
+  user.save()
+
+  // let user = await User.findOne({ email: req.body.email })
+  // if (user.like_movies.includes(req.params.index)) {
+  //   user.like_movies.splice(user.like_movies.indexOf(req.params.index), 1)
+  // } else {
+  //   user.like_movies.push(req.params.index)
+  // }
+
+  // user.save()
+
+  res.send('successfully saved')
+})
 
 // router.put('/:movie_id', function(req, res) {
 //   Movie.findOne({ _id: req.params.movie_id }, { $set: req.query })
