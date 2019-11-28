@@ -12,8 +12,6 @@ const mongoose = require('mongoose')
 // const history = require('connect-history-api-fallback')
 
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/user');
-const movieRouter = require('./routes/movies');
 
 const port = process.env.PORT || 3000
 var app = express();
@@ -79,7 +77,8 @@ db.once('open', function() {
 })
 
 const LOCAL_URI = 'mongodb://localhost/mongodb_tutorial'
-mongoose.connect(LOCAL_URI, {
+const GLOBAL_URI = process.env.MONGODB_URI
+mongoose.connect(GLOBAL_URI, {
   useCreateIndex: true,
   useNewUrlParser: true,
   useUnifiedTopology: true,

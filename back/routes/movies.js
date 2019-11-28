@@ -267,7 +267,7 @@ router.post('/:index/rate', async function(req, res) {
   }
 
   movie.rate = rate
-  user.rate = rate
+  user.rate = user_rate
   await movie.save()
   await user.save()
 
