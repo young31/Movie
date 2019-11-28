@@ -43,11 +43,8 @@ const crawling = async() => {
 // router.get('/test2', async function(req, res) {
 //     let movies = await Movie.find()
 //     for (movie of movies) {
-//       movie.actors_name = []
 //       try {
-//         for (m of movie.actors) {
-//           movie.actors_name.push(m.name.split(' ').join(''))
-//         }
+//         movie.title_trim = movie.title.split(' ').join('')
 //       } catch (e) {
 //         console.log(e)
 //       }
@@ -114,7 +111,7 @@ router.post('/search', async function(req, res) {
       // console.log(aaa)
     movie_title = Movie.find({ title_trim: { $regex: target, $options: "ix" } })
     movie_actor = Movie.find({ actors_name: { $in: target } })
-    movie_director = Movie.find({ director_name: { $in: target } })
+    movie_director = Movie.find({ directors_name: { $in: target } })
   }
   if (req.body.openDt) {
     movie_title = movie_title
@@ -224,9 +221,10 @@ router.post('/:index/like', async function(req, res) { // 유저정보(email)와
 // 평점
 router.post('/:index/rate', async function(req, res) {
   // 검증필요
-  let movie = await Movie.findOne({ index: req.params.index }).distinct('actors')
+  let movie = await Movie.findOne({ index: req.params.index })
   let user = await User.findOne({ email: req.body.email })
   let rate = await Movie.findOne({ index: req.params.index }).distinct('rate')
+  let user_rate = await User.findOne({ email: req.body.email }).distinct('rate')
 
   if (rate.some(item => item.email === req.body.email)) {
     rate.forEach(function(item) {
@@ -234,7 +232,7 @@ router.post('/:index/rate', async function(req, res) {
         item.rate = req.body.rate
       }
     })
-    user.rate.forEach(function(item) {
+    rate.forEach(function(item) {
       if (item.index === req.params.index) {
         item.rate = req.body.rate
       }
@@ -251,8 +249,9 @@ router.post('/:index/rate', async function(req, res) {
   }
 
   movie.rate = rate
-  movie.save()
-  user.save()
+  user.rate = rate
+  await movie.save()
+  await user.save()
 
   // let user = await User.findOne({ email: req.body.email })
   // if (user.like_movies.includes(req.params.index)) {
