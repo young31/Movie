@@ -77,7 +77,7 @@ export default {
     // 영화 데이터 불러오기
     const SERVER_IP = process.env.VUE_APP_SERVER_IP;
     const movieResponse = await axios.get(SERVER_IP + "/api/movies");
-    this.movies = movieResponse.data;
+    this.movies = movieResponse.data; 
     // console.log(this.movies)
   }
 };
