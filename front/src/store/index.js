@@ -13,6 +13,7 @@ export default new Vuex.Store({
     movieDetail: null,
     user: null,
     findUsers: null,
+    chosenGenres: []
   },
   // computed
   getters: {
@@ -30,7 +31,7 @@ export default new Vuex.Store({
       return state.token ? jwtDecode(state.token).email : null
     },
     getResult(state) {
-      return state.searchMovieResuts ? true : false
+      return state.searchMovieResuts.length ? true : false
     },
     getUsers(state) {
       return state.findUsers ? true : false 
@@ -55,6 +56,16 @@ export default new Vuex.Store({
     },
     setFindUsers(state, findUserInfo) {
       state.findUsers = findUserInfo
+    },
+    chosenGenreNull(state, genre) {
+      state.chosenGenres = genre
+    },
+    setChosenGenres(state, genre) {
+      if (state.chosenGenres.includes(genre)) {
+        state.chosenGenres.splice(state.chosenGenres.indexOf(genre), 1)
+      } else {
+        state.chosenGenres.push(genre)
+      }
     }
   },
   // method
@@ -80,11 +91,17 @@ export default new Vuex.Store({
     goMovieDetail(context, movie) {
       context.commit('setMovieDetail', movie)
     },
-    getUserInfo(context, userInfo) {
+    setUser(context, userInfo) {
       context.commit('setUser', userInfo)
     },
     searchUsers(context, searchUsersInfo) {
       context.commit('setFindUsers', searchUsersInfo)
+    },
+    chosenGenreNull(context, genre) {
+      context.commit('chosenGenreNull', genre)
+    },
+    setChosenGenres(context, genres) {
+      context.commit('setChosenGenres', genres)
     }
   },
 })

@@ -1,64 +1,70 @@
 <template>
   <div id="app">
     <div>
-      <b-navbar id="nav" toggleable="lg" type="light" variant="transparent">
-        <b-navbar-brand href="/">Home</b-navbar-brand>
-
-        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-
-        <b-collapse id="nav-collapse" is-nav>
-
-          <!-- Right aligned nav items -->
-          <b-navbar-nav class="ml-auto">
-            <b-nav-form v-if="isLoggedIn">
-              <b-button class="mr-1" href="/user" right>유저</b-button>
-              <b-button @click.prevent="logout" class="mr-1" right>로그아웃</b-button>
-            </b-nav-form>
-            <b-nav-form v-else>
-              <b-button @click="loginClick" class="mr-1" right>로그인</b-button>
-              <b-button @click="signupClick" class="mr-1" right>회원가입</b-button>
-            </b-nav-form>
-          </b-navbar-nav>
-        </b-collapse>
-      </b-navbar>
+      <nav id="nav" class="navbar navbar-white bg-white">
+        <a class="navbar-brand" href="/">영화추천</a>
+        <form class="form-inline">
+          <div v-if="isLoggedIn">
+            <div @click="goUserPage" class="basic-btn-css mr-1">유저</div>
+            <div @click.prevent="logout" class="basic-btn-css mr-1">로그아웃</div>
+          </div>
+          <div v-else>
+            <div @click="loginClick" class="basic-btn-css mr-1">로그인</div>
+            <div @click="signupClick" class="basic-btn-css mr-1">회원가입</div>
+          </div>
+        </form>
+      </nav>
     </div>
-    <div class="container">
-      <router-view :movies="movies" />
-    </div>
+    <router-view class="container" :movies="movies" />
   </div>
 </template>
 
 <script>
-import router from '@/router'
-import axios from 'axios'
+import router from "@/router";
+import axios from "axios";
 
 export default {
   name: "app",
   data() {
     return {
       movies: []
-    }
+    };
   },
   computed: {
     isLoggedIn() {
       return this.$store.getters.isLoggedIn;
+    },
+    getMyEmail() {
+      return this.$store.getters.myEmail;
     }
   },
   methods: {
     logout() {
-      this.$session.destroy()
-      this.$store.dispatch('logout')
-      this.loginState = 0
-      router.push('/')
+      this.$session.destroy();
+      this.$store.dispatch("logout");
+      this.loginState = 0;
+      router.push("/");
     },
     loginClick() {
-      this.$store.dispatch('loginClick', 1)
+      this.$store.dispatch("loginClick", 1);
     },
     signupClick() {
-      this.$store.dispatch('loginClick', 2)
+      this.$store.dispatch("loginClick", 2);
     },
     cancelClick() {
-      this.$store.dispatch('loginClick', 0)
+      this.$store.dispatch("loginClick", 0);
+    },
+    goUserPage() {
+      const SERVER_IP = process.env.VUE_APP_SERVER_IP;
+      axios.get(SERVER_IP + `/user/${this.getMyEmail}`)
+        .then(response => {
+          this.$store.dispatch('setUser', response.data)
+          console.log(response.data)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+      router.push('/user')
     }
   },
   async created() {
@@ -67,18 +73,34 @@ export default {
       const token = this.$session.get("jwt");
       this.$store.dispatch("login", token);
     }
-    
-    // 영화 데이터 불러오기
-    const SERVER_IP = process.env.VUE_APP_SERVER_IP
-    const movieResponse = await axios.get(SERVER_IP + '/api/movies')
-    this.movies = movieResponse.data
-    console.log(this.movies)
 
-  },
+    // 영화 데이터 불러오기
+    const SERVER_IP = process.env.VUE_APP_SERVER_IP;
+    const movieResponse = await axios.get(SERVER_IP + "/api/movies");
+    this.movies = movieResponse.data;
+    // console.log(this.movies)
+  }
 };
 </script>
 
 <style>
+body{
+  background-color: #f0f0f0 !important;
+}
+
+*:focus {
+  outline: none;
+  background-color: none;
+}
+
+*:hover {
+  background-color: none;
+}
+
+.content-mt {
+  padding-top: 10vh;
+}
+
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -88,9 +110,17 @@ export default {
   /* margin-top: 60px; */
 }
 
-/* #nav {
-  padding: 30px;
-} */
+#nav {
+  position: fixed;
+  top: 0;
+  z-index: 500;
+  font-size: 14px;
+  letter-spacing: -0.4px;
+  width: 100%;
+  height: 65px;
+  padding: 0 4%;
+  border-bottom-color: #f0f0f0
+}
 
 #nav a {
   /* font-weight: bold; */
@@ -101,6 +131,41 @@ export default {
   color: #42b983;
 } */
 a.router-link {
-  color:#2c3e50
+  color: #2c3e50;
+}
+
+.wallpaper-center {
+  height: 100vh;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  justify-content: center;
+}
+
+.div-center {
+  position: relative;
+  /* display: flex; */
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+}
+
+.basic-btn-css {
+  display: inline-flex;
+  background-color: #2c3e50;
+  color: aliceblue;
+  letter-spacing: -0.0625vw;
+  line-height: 4vh;
+  height: 4vh;
+  width: 10vh;
+  border: 0;
+  outline: 0;
+  border-radius: 3vw;
+  justify-content: center;
+}
+
+.basic-btn-css:hover {
+  cursor: pointer;
 }
 </style>

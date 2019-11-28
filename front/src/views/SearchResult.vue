@@ -1,5 +1,5 @@
 <template>
-  <div v-if="getResult">
+  <div v-if="getResult" class="wallpaper-center">
     <h2>검색 결과</h2>
     <br />
     <div v-if="getMovies.movie_title.length">
@@ -67,7 +67,7 @@
 
 
   </div>
-  <div v-else>
+  <div v-else class="wallpaper-center text-center">
     <p>관련 영화가 없습니다.</p>
   </div>
 </template>

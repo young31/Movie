@@ -1,16 +1,16 @@
 <template>
-  <div class="index">
+  <div id="index">
     <div v-if="loginState === 1">
-      <LoginForm />
+      <LoginForm class="wallpaper-center text-center" />
     </div>
     <div v-else-if="loginState === 2">
-      <SignupForm />
+      <SignupForm class="wallpaper-center text-center" />
     </div>
     <div v-else>
-      <SearchBar />
+      <SearchBar class="wallpaper-center text-center" />
     </div>
 
-    <div v-if="isLoggedIn && movies.length" class="mx-3">
+    <div v-if="isLoggedIn && movies.length" class="mx-3 wallpaper-center">
       <!-- 최신작 -->
       <flickity ref="flickity" :options="flickityOptions">
         <b-container v-for="(i, i_idx) in idx" :key="i_idx" class="bv-example-row">
@@ -73,4 +73,5 @@ export default {
 </script>
 
 <style>
+
 </style>
