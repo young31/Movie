@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="search-bar">
     <h3>로그인</h3>
     <!-- id -->
     <!-- <div class={ is-valid: state1, is-not-valid: !state1 }> -->
@@ -44,9 +44,8 @@ export default {
   name: "LoginForm",
   methods: {
     login() {
+      const SERVER_IP = process.env.VUE_APP_SERVER_IP;
       if (this.state1 && this.state2) {
-        const SERVER_IP = process.env.VUE_APP_SERVER_IP;
-
         axios
           .post(SERVER_IP + "/user/login", this.credentials)
           .then(response => {
@@ -56,13 +55,24 @@ export default {
             this.$session.start();
             this.$session.set("jwt", response.data.message);
             this.$store.dispatch("login", response.data.message);
-            this.$store.dispatch("setUser", this.credentials.email);
             console.log(response.data.message);
           })
           .catch(error => {
             console.error(error);
           });
       }
+      // 로그인 유저 정보 저장
+        axios
+          .get(SERVER_IP + `/user/${this.credentials.email}`)
+          .then(response => {
+            this.$session.start();
+            this.$session.set("nowUser", response.data);
+            this.$store.dispatch("setNowUser", response.data);
+            console.log(response.data);
+          })
+          .catch(error => {
+            console.error(error);
+          });
     },
     cancelClick() {
       this.$store.dispatch("loginClick", 0);
@@ -71,8 +81,8 @@ export default {
   computed: {
     // email
     state1() {
-      if ( this.credentials.email === "" ) {
-        return null
+      if (this.credentials.email === "") {
+        return null;
       } else {
         return Emailvalidator.validate(this.credentials.email);
       }
@@ -80,8 +90,8 @@ export default {
 
     // password
     state2() {
-      if ( this.credentials.password === "" ) {
-        return null
+      if (this.credentials.password === "") {
+        return null;
       } else {
         return this.credentials.password.length >= 8 ? true : false;
       }

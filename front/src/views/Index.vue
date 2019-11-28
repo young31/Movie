@@ -44,7 +44,7 @@ export default {
         slidesPerView: 6,
         spaceBetween: 0,
         freeMode: true,
-        loop: true,
+        loop: true
         // navigation: {
         //   nextEl: ".swiper-button-next",
         //   prevEl: ".swiper-button-prev"
@@ -92,5 +92,10 @@ export default {
   /* flex-direction: column; */
   /* -webkit-box-pack: center; */
   /* justify-content: center; */
+}
+
+.swiper-container[data-v-23543608] {
+  /* height: 500px; */
+  height: 100vh;
 }
 </style>

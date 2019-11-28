@@ -1,37 +1,34 @@
 <template>
   <div v-if="getResult" class="wallpaper-center">
-    <h2>검색 결과</h2>
-    <br />
-    <div v-if="getMovies.movie_title.length">
-      <h4>영화명</h4>
-      <flickity ref="flickity" :options="flickityOptions">
-        <b-container v-for="(i, i_idx) in idx.movie_title" :key="i_idx" class="bv-example-row">
-          <b-row class="text-center">
-            <b-col cols="2" v-for="(movie, moive_idx) in getMovies.movie_title" :key="moive_idx">
-              <MovieList :movie="movie" />
-            </b-col>
-          </b-row>
-        </b-container>
-      </flickity>
+    <div v-if="getMovies.movie_title.length" class="px-3 movie-align">
+      <h4>영화명관련</h4>
+      <swiper :options="swiperOption">
+        <swiperSlide v-for="(movie, moive_idx) in getMovies.movie_title" :key="moive_idx">
+          <MovieList :movie="movie" />
+        </swiperSlide>
+      </swiper>
     </div>
 
-    
-    <div v-if="getMovies.movie_actor.length">
-      <h4>배우</h4>
-      <flickity ref="flickity" :options="flickityOptions">
-        <b-container v-for="(i, i_idx) in idx.movie_actors" :key="i_idx" class="bv-example-row">
-          <b-row class="text-center">
-            <b-col cols="2" v-for="(movie, moive_idx) in getMovies.movie_actors" :key="moive_idx">
-              <MovieList :movie="movie" />
-            </b-col>
-          </b-row>
-        </b-container>
-      </flickity>
+    <div v-if="getMovies.movie_actor.length" class="px-3 movie-align">
+      <h4>배우관련</h4>
+      <swiper :options="swiperOption">
+        <swiperSlide v-for="(movie, moive_idx) in getMovies.movie_actor" :key="moive_idx">
+          <MovieList :movie="movie" />
+        </swiperSlide>
+      </swiper>
     </div>
 
-    
+    <div v-if="getMovies.movie_director.length" class="px-3 movie-align">
+      <h4>감독관련</h4>
+      <swiper :options="swiperOption">
+        <swiperSlide v-for="(movie, moive_idx) in getMovies.movie_director" :key="moive_idx">
+          <MovieList :movie="movie" />
+        </swiperSlide>
+      </swiper>
+    </div>
+
     <div v-if="getMovies.movie_director.length">
-      <h4>감독</h4>
+      <h4>유저관련</h4>
       <flickity ref="flickity" :options="flickityOptions">
         <b-container v-for="(i, i_idx) in idx.movie_directors" :key="i_idx" class="bv-example-row">
           <b-row class="text-center">
@@ -46,26 +43,6 @@
         </b-container>
       </flickity>
     </div>
-
-
-    <div v-if="getMovies.movie_director.length">
-      <h4>유저</h4>
-      <flickity ref="flickity" :options="flickityOptions">
-        <b-container v-for="(i, i_idx) in idx.movie_directors" :key="i_idx" class="bv-example-row">
-          <b-row class="text-center">
-            <b-col
-              cols="2"
-              v-for="(movie, moive_idx) in getMovies.movie_directors"
-              :key="moive_idx"
-            >
-              <MovieList :movie="movie" />
-            </b-col>
-          </b-row>
-        </b-container>
-      </flickity>
-    </div>
-
-
   </div>
   <div v-else class="wallpaper-center text-center">
     <p>관련 영화가 없습니다.</p>
@@ -74,60 +51,25 @@
 
 <script>
 import MovieList from "@/components/index/MovieList";
-import Flickity from "vue-flickity";
+import { swiper, swiperSlide } from "vue-awesome-swiper";
+import "swiper/dist/css/swiper.css";
 
 export default {
   name: "SearchResult",
   data() {
     return {
-      idx: {
-        movie_title: [],
-        movie_actors: [],
-        movie_directors: []
-      },
-      flickityOptions: {
-        initialIndex: 0,
-        prevNextButtons: false,
-        pageDots: false,
-        wrapAround: true
+      swiperOption: {
+        slidesPerView: 6,
+        spaceBetween: 0,
+        freeMode: true,
+        loop: true
       }
     };
   },
   components: {
     MovieList,
-    Flickity
-  },
-  methods: {
-    make_idx() {
-      for (
-        let ii = 0;
-        ii <
-        parseInt(this.getMovies.movie_title.length / 6) +
-          Math.ceil((this.getMovies.movie_title.length % 6) / 6);
-        ii++
-      ) {
-        console.log(this.getMovies.movie_title.length)
-        this.idx.movie_title.push(6 * ii);
-      }
-      for (
-        let ii = 0;
-        ii <
-        parseInt(this.getMovies.movie_actors.length / 6) +
-          Math.ceil((this.getMovies.movie_actors.length % 6) / 6);
-        ii++
-      ) {
-        this.idx.movie_actors.push(6 * ii);
-      }
-      for (
-        let ii = 0;
-        ii <
-        parseInt(this.getMovies.movie_directors.length / 6) +
-          Math.ceil((this.getMovies.movie_directors.length % 6) / 6);
-        ii++
-      ) {
-        this.idx.movie_directors.push(6 * ii);
-      }
-    }
+    swiper,
+    swiperSlide
   },
   computed: {
     getMovies() {
@@ -138,7 +80,11 @@ export default {
     }
   },
   created() {
-    this.make_idx();
+    // 검색 결과 유지
+    if (this.$session.has("searchMovieResult")) {
+      const searchMovieResult = this.$session.get("searchMovieResult");
+      this.$store.dispatch("searchMovie", searchMovieResult);
+    }
   }
 };
 </script>

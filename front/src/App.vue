@@ -2,7 +2,7 @@
   <div id="app">
     <div>
       <nav id="nav" class="navbar navbar-white bg-white">
-        <a class="navbar-brand" href="/">영화추천</a>
+        <a class="navbar-brand" href="/">세나영</a>
         <form class="form-inline">
           <div v-if="isLoggedIn">
             <div @click="goUserPage" class="basic-btn-css mr-1">유저</div>
@@ -54,6 +54,9 @@ export default {
     cancelClick() {
       this.$store.dispatch("loginClick", 0);
     },
+    myEmail() {
+      return this.$store.getters.myEmail;
+    },
     goUserPage() {
       const SERVER_IP = process.env.VUE_APP_SERVER_IP;
       axios.get(SERVER_IP + `/user/${this.getMyEmail}`)
@@ -74,11 +77,28 @@ export default {
       this.$store.dispatch("login", token);
     }
 
+    // 로그인 유저 정보 유지
+    if (this.$session.has("nowUser")) {
+      const nowUser = this.$session.get("nowUser");
+      this.$store.dispatch("setNowUser", nowUser);
+    }
+
     // 영화 데이터 불러오기
     const SERVER_IP = process.env.VUE_APP_SERVER_IP;
     const movieResponse = await axios.get(SERVER_IP + "/api/movies");
     this.movies = movieResponse.data;
-    // console.log(this.movies)
+
+    // 검색 결과 유지
+    if (this.$session.has("searchMovieResult")) {
+      const searchMovieResult = this.$session.get("searchMovieResult");
+      this.$store.dispatch("searchMovie", searchMovieResult);
+    }
+    
+    // 영화 디테일 뷰 유지
+    if (this.$session.has('nowMovie')) {
+      const nowMovie = this.$session.get('nowMovie')
+      this.$store.dispatch('setNowMovie', nowMovie)
+    }
   }
 };
 </script>
@@ -130,6 +150,11 @@ body{
 #nav a {
   /* font-weight: bold; */
   color: #2c3e50;
+}
+
+.search-bar {
+  max-width: 650px;
+  margin: 0 auto;
 }
 
 /* #nav a.router-link-exact-active {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="search-bar">
     <h3>회원가입</h3>
     <!-- email -->
     <b-form-group id="signupEmail" :state="state1">

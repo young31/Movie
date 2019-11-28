@@ -17,7 +17,9 @@ export default {
   },
   methods: {
     goDetailView() {
-      this.$store.dispatch("goMovieDetail", this.movie);
+      this.$session.start()
+      this.$session.set('nowMovie', this.movie)
+      this.$store.dispatch("setNowMovie", this.movie);
       router.push("/movie");
     }
   }

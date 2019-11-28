@@ -10,10 +10,11 @@ export default new Vuex.Store({
     token: null,
     loginState: 0,
     searchMovieResults: null,
-    movieDetail: null,
     user: null,
     findUsers: null,
-    chosenGenres: []
+    chosenGenres: [],
+    nowMovie: null,
+    nowUser: null
   },
   // computed
   getters: {
@@ -48,9 +49,6 @@ export default new Vuex.Store({
     setSearchMovieResults(state, results) {
       state.searchMovieResults = results
     },
-    setMovieDetail(state, movie) {
-      state.movieDetail = movie
-    },
     setUser(state, userInfo) {
       state.user = userInfo
     },
@@ -66,6 +64,12 @@ export default new Vuex.Store({
       } else {
         state.chosenGenres.push(genre)
       }
+    },
+    setNowUser(state, user) {
+      state.nowUser = user
+    },
+    setNowMovie(state, movie) {
+      state.nowMovie = movie
     }
   },
   // method
@@ -88,9 +92,6 @@ export default new Vuex.Store({
     searchMovie(context, results) {
       context.commit('setSearchMovieResults', results)
     },
-    goMovieDetail(context, movie) {
-      context.commit('setMovieDetail', movie)
-    },
     setUser(context, userInfo) {
       context.commit('setUser', userInfo)
     },
@@ -102,6 +103,12 @@ export default new Vuex.Store({
     },
     setChosenGenres(context, genres) {
       context.commit('setChosenGenres', genres)
+    },
+    setNowUser(context, user) {
+      context.commit('setNowUser', user)
+    },
+    setNowMovie(context, movie) {
+      context.commit('setNowMovie', movie)
     }
   },
 })

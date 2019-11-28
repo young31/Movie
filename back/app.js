@@ -77,8 +77,8 @@ db.once('open', function() {
 })
 
 const LOCAL_URI = 'mongodb://localhost/mongodb_tutorial'
-const GLOBAL_URI = process.env.MONGODB_URI
-mongoose.connect(GLOBAL_URI, {
+// const GLOBAL_URI = process.env.MONGODB_URI
+mongoose.connect(LOCAL_URI, {
   useCreateIndex: true,
   useNewUrlParser: true,
   useUnifiedTopology: true,

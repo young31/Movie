@@ -10,7 +10,7 @@
       />
       <!-- <div class="input-group-append">
         <button @click="click" class="btn btn-outline-transparent">검색</button>
-      </div> -->
+      </div>-->
     </div>
     <div v-show-slide="featuresOpen" class="div-center detail-search mb-3">
       <!-- 장르 -->
@@ -25,10 +25,44 @@
       <!-- 평점 -->
       <input v-model="searchInfo.rating" type="number" />
     </div>
-    <button
+    <!-- <button
       @click="toggleFeatures"
       class="toggle-features search-btn-css mb-5"
-    >{{ featuresOpen ? '접어두기' : '상세보기' }}</button>
+    >{{ featuresOpen ? '접어두기' : '상세보기' }}</button>-->
+
+    <!-- <div ></div> -->
+    <svg
+      v-if="!featuresOpen"
+      @click="toggleFeatures"
+      class="bi bi-chevron-compact-down"
+      width="32"
+      height="32"
+      viewBox="0 0 20 20"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M3.553 8.776a.5.5 0 01.67-.223L10 11.44l5.776-2.888a.5.5 0 11.448.894l-6 3a.5.5 0 01-.448 0l-6-3a.5.5 0 01-.223-.67z"
+        clip-rule="evenodd"
+      />
+    </svg>
+    <svg
+      v-else
+      @click="toggleFeatures"
+      class="bi bi-chevron-compact-up"
+      width="32"
+      height="32"
+      viewBox="0 0 20 20"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M9.776 7.553a.5.5 0 01.448 0l6 3a.5.5 0 11-.448.894L10 8.56l-5.776 2.888a.5.5 0 11-.448-.894l6-3z"
+        clip-rule="evenodd"
+      />
+    </svg>
   </div>
 </template>
 
@@ -93,17 +127,14 @@ export default {
   },
   methods: {
     click() {
-      // const new_genres = this.genres.filter(genre => {
-      //   return genre.contained;
-      // });
-      // this.searchInfo.genres = new_genres;
       const SERVER_IP = process.env.VUE_APP_SERVER_IP;
-      // console.log(this.searchInfo)
       // 영화 검색
       axios
         .post(SERVER_IP + "/api/movies/search", this.searchInfo)
         .then(response => {
           console.log(response.data.result);
+          this.$session.start()
+          this.$session.set('searchMovieResult', response.data.result)
           this.$store.dispatch("searchMovie", response.data.result);
           this.$store.dispatch("chosenGenreNull", []);
           router.push("/result");
@@ -126,14 +157,9 @@ export default {
 };
 </script>
 
-<style>
-.search-bar {
-  max-width: 650px;
-  margin: 0 auto;
-}
-
+<style> 
 .input-bar {
-  box-shadow: 0 3px 10px 0 rgba(0,0,0,0.1), 0 1px 4px 0 rgba(0,0,0,0.35);
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1), 0 1px 4px 0 rgba(0, 0, 0, 0.35);
   border-radius: 0.45vw;
 }
 
