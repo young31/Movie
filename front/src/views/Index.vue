@@ -10,23 +10,34 @@
       <SearchBar class="wallpaper-center text-center" />
     </div>
 
-    <div v-if="isLoggedIn && movies.length" class="px-3 wallpaper-center">
+    <div v-if="isLoggedIn && movies.length" class="px-3 movie-align">
       <!-- 최신작 -->
-      <flickity ref="flickity" :options="flickityOptions">
+      <!-- <flickity ref="flickity" :options="flickityOptions">
         <b-container v-for="(i, i_idx) in idx" :key="i_idx" class="bv-example-row">
           <b-row class="text-center">
             <b-col v-for="(movie, moive_idx) in movies.slice(0 + i, 5 + i)" :key="moive_idx">
               <MovieList :movie="movie" />
             </b-col>
-          </b-row>
+      </b-row>-->
 
-          <!-- <b-row class="text-center">
+      <!-- <b-row class="text-center">
             <b-col v-for="(movie, moive_idx) in movies.slice(5 + i, 10 + i)" :key="moive_idx">
               <MovieList :movie="movie" />
             </b-col>
-          </b-row> -->
-        </b-container>
-      </flickity>
+      </b-row>-->
+      <!-- </b-container>
+      </flickity>-->
+      <swiper :options="swiperOption">
+        <!-- slides -->
+        <swiperSlide v-for="movie in movies" :key="movie.key">
+          <MovieList :movie="movie" />
+        </swiperSlide>
+
+        <!-- Optional controls -->
+        <!-- <div class="swiper-pagination" slot="pagination"></div> -->
+        <!-- <div class="swiper-button-prev" slot="button-prev"></div>
+        <div class="swiper-button-next" slot="button-next"></div> -->
+      </swiper>
     </div>
   </div>
 </template>
@@ -36,7 +47,9 @@ import LoginForm from "@/components/index/LoginForm";
 import SignupForm from "@/components/index/SignupForm";
 import SearchBar from "@/components/index/SearchBar";
 import MovieList from "@/components/index/MovieList";
-import Flickity from "vue-flickity";
+// import Flickity from "vue-flickity";
+import "swiper/dist/css/swiper.css";
+import { swiper, swiperSlide } from "vue-awesome-swiper";
 
 export default {
   name: "Index",
@@ -48,6 +61,20 @@ export default {
         prevNextButtons: false,
         pageDots: false,
         wrapAround: true
+      },
+      swiperOption: {
+        // direction: "vertical",
+        // pagination: {
+        //   el: ".swiper-pagination",
+        //   type: "bullets"
+        slidesPerView: 5,
+        spaceBetween: 0,
+        freeMode: true,
+        loop: true,
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev"
+        }
       }
     };
   },
@@ -56,7 +83,9 @@ export default {
     SignupForm,
     SearchBar,
     MovieList,
-    Flickity
+    // Flickity,
+    swiper,
+    swiperSlide
   },
   computed: {
     loginState() {
@@ -72,6 +101,23 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
 
+.swiper-container {
+  height: 500px;
+}
+
+.movie-align {
+  height: 100vh;
+  /* display: flex; */
+  /* position: relative; */
+  /* flex-direction: column; */
+  /* -webkit-box-pack: center; */
+  /* justify-content: center; */
+}
 </style>

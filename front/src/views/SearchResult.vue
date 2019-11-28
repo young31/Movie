@@ -16,7 +16,7 @@
     </div>
 
     
-    <div v-if="getMovies.movie_actors.length">
+    <div v-if="getMovies.movie_actor.length">
       <h4>배우</h4>
       <flickity ref="flickity" :options="flickityOptions">
         <b-container v-for="(i, i_idx) in idx.movie_actors" :key="i_idx" class="bv-example-row">
@@ -30,7 +30,7 @@
     </div>
 
     
-    <div v-if="getMovies.movie_directors.length">
+    <div v-if="getMovies.movie_director.length">
       <h4>감독</h4>
       <flickity ref="flickity" :options="flickityOptions">
         <b-container v-for="(i, i_idx) in idx.movie_directors" :key="i_idx" class="bv-example-row">
@@ -48,7 +48,7 @@
     </div>
 
 
-    <div v-if="getMovies.movie_directors.length">
+    <div v-if="getMovies.movie_director.length">
       <h4>유저</h4>
       <flickity ref="flickity" :options="flickityOptions">
         <b-container v-for="(i, i_idx) in idx.movie_directors" :key="i_idx" class="bv-example-row">
@@ -106,6 +106,7 @@ export default {
           Math.ceil((this.getMovies.movie_title.length % 6) / 6);
         ii++
       ) {
+        console.log(this.getMovies.movie_title.length)
         this.idx.movie_title.push(6 * ii);
       }
       for (
@@ -130,7 +131,7 @@ export default {
   },
   computed: {
     getMovies() {
-      return this.$store.state.searchMovieResuts;
+      return this.$store.state.searchMovieResults;
     },
     getResult() {
       return this.$store.getters.getResult;

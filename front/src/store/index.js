@@ -9,7 +9,7 @@ export default new Vuex.Store({
   state: {
     token: null,
     loginState: 0,
-    searchMovieResuts: [],
+    searchMovieResults: null,
     movieDetail: null,
     user: null,
     findUsers: null,
@@ -31,7 +31,7 @@ export default new Vuex.Store({
       return state.token ? jwtDecode(state.token).email : null
     },
     getResult(state) {
-      return state.searchMovieResuts.length ? true : false
+      return state.searchMovieResults ? true : false
     },
     getUsers(state) {
       return state.findUsers ? true : false 
@@ -45,8 +45,8 @@ export default new Vuex.Store({
     setLoginState(state, loginState) {
       state.loginState = loginState
     },
-    setSearchMovieResuts(state, results) {
-      state.searchMovieResuts = results
+    setSearchMovieResults(state, results) {
+      state.searchMovieResults = results
     },
     setMovieDetail(state, movie) {
       state.movieDetail = movie
@@ -86,7 +86,7 @@ export default new Vuex.Store({
       context.commit('setLoginState', loginState)
     },
     searchMovie(context, results) {
-      context.commit('setSearchMovieResuts', results)
+      context.commit('setSearchMovieResults', results)
     },
     goMovieDetail(context, movie) {
       context.commit('setMovieDetail', movie)
