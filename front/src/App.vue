@@ -85,7 +85,7 @@ export default {
 
 <style>
 body{
-  background-color: #f0f0f0 !important;
+  background-color: #f8f8f8a2 !important;
 }
 
 *:focus {
@@ -98,7 +98,7 @@ body{
 }
 
 .content-mt {
-  margin-top: 9vh;
+  margin-top: 8.5vh;
 }
 
 .content-px {
@@ -157,10 +157,11 @@ a.router-link {
 }
 .div-inner-content {
   position: relative;
+  display: flex;
   margin-bottom: auto;
   display: inline-block;
   z-index: 100;
-  /* align-items: top; */
+  align-items: flex-start;
   /* justify-content: top; */
 }
 
@@ -180,5 +181,24 @@ a.router-link {
 
 .basic-btn-css:hover {
   cursor: pointer;
+}
+
+.btn-inactive {
+  display: inline-block;
+  color: white;
+  border-color: transparent;
+  letter-spacing: -0.0625vw;
+  border-radius: 4vh;
+  outline: none;
+}
+
+.btn-active {
+  display: inline-block;
+  color: white;
+  border-color: transparent;
+  background-color: #4d5f72;
+  letter-spacing: -0.0625vw;
+  border-radius: 4vh;
+  outline: none;
 }
 </style>

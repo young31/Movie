@@ -1,5 +1,6 @@
 <template>
-  <div class="user content-mt">
+  <div class="user content-mt content-px">
+    <h1>보고싶은 영화</h1>
     {{ user }}
   </div>
 </template>
