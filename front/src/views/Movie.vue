@@ -1,18 +1,29 @@
 <template>
-  <div class="content-mt div-center">
+  <div class="content-mt content-px div-center">
     <div class="movie-head">
       <img
-        src="https://movie-phinf.pstatic.net/20191121_221/1574298335357mqgLk_JPEG/movie_image.jpg"
+        :src="getMovie.posterUrl"
         :alt="getMovie.title"
         class="thumbnail"
       />
-      <div class="movieTitle">{{ getMovie.title }}</div>
+      <div class="div-inner-content">
+        <div class="movieTitle">{{ getMovie.title }}</div>
+        <div class="movieOpenDt">{{ getMovie.openDt }}</div>
+        <div class="movieRunningTime">{{ getMovie.runningTime }}</div>
+        <div class="movieGenres">{{ getMovie.genres }}</div>
+      </div>
+    </div>
+
+    <div class="movie-body">
+      <div class="div-inner-content">
+        <div class="movieActors">{{ getMovie.actors }}</div>
+      </div>
     </div>
     <h1>영화홈</h1>
-    <h2>{{ getMovie.title }}</h2>
+    <!-- <h2>{{ getMovie.title }}</h2> -->
     <!-- <h5>{{ getMovie.posterUrl }}</h5> -->
 
-    <h5>{{ getMovie.runningTime }}</h5>
+    <!-- <h5>{{ getMovie.runningTime }}</h5> -->
     <h5>{{ getMovie.openDt }}</h5>
     <h5>{{ getMovie.genres }}</h5>
     <h5>{{ getMovie.actors }}</h5>
@@ -77,7 +88,7 @@ export default {
 <style>
 .thumbnail {
   /* display: inline-block; */
-  max-width: 16vw;
+  max-width: 14vw;
   border-radius: 0.5vw;
 }
 </style>

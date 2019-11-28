@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-card
-      img-src="https://movie-phinf.pstatic.net/20191121_221/1574298335357mqgLk_JPEG/movie_image.jpg"
+      :img-src="movie.posterUrl"
       :img-alt="movie.title"
       img-top
       tag="article"

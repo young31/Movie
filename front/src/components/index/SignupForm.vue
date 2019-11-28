@@ -86,24 +86,41 @@ export default {
   computed: {
     // email
     state1() {
-      return Emailvalidator.validate(this.credentials.email);
+      if ( this.credentials.email === "" ) {
+        return null
+      } else {
+        return Emailvalidator.validate(this.credentials.email);
+      }
     },
 
     // userId
     state2() {
-      return this.credentials.userId.length >= 2 ? true : false;
+      if ( this.credentials.userId === "" ) {
+        return null
+      } else {
+        return this.credentials.userId.length >= 2 ? true : false;
+      }
     },
 
     // password
     state3() {
-      return this.credentials.password.length >= 8 ? true : false;
+      if ( this.credentials.password === "" ) {
+        return null
+      } else {
+        return this.credentials.password.length >= 8 ? true : false;
+      }
     },
 
     // password confirm
     state4() {
-      return this.credentials.password === this.credentials.passwordConfirm
+      if ( this.credentials.passwordConfirm === "" ) {
+        return null
+      } else {
+        return this.credentials.password === this.credentials.passwordConfirm
         ? true
         : false;
+      }
+      
     }
   },
   data() {
