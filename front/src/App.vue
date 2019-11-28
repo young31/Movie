@@ -15,7 +15,7 @@
         </form>
       </nav>
     </div>
-    <router-view class="container" :movies="movies" />
+    <router-view class="fluid-container" :movies="movies" />
   </div>
 </template>
 
@@ -98,7 +98,11 @@ body{
 }
 
 .content-mt {
-  padding-top: 10vh;
+  margin-top: 9vh;
+}
+
+.content-px {
+  padding: 5vh 12vw;
 }
 
 #app {
@@ -107,6 +111,7 @@ body{
   -moz-osx-font-smoothing: grayscale;
   /* text-align: center; */
   color: #2c3e50;
+  background-color: white;
   /* margin-top: 60px; */
 }
 
@@ -149,6 +154,14 @@ a.router-link {
   z-index: 100;
   align-items: center;
   justify-content: center;
+}
+.div-inner-content {
+  position: relative;
+  margin-bottom: auto;
+  display: inline-block;
+  z-index: 100;
+  /* align-items: top; */
+  /* justify-content: top; */
 }
 
 .basic-btn-css {

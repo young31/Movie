@@ -2,8 +2,8 @@
   <div>
     <h3>로그인</h3>
     <!-- id -->
-    <div class={ is-valid: state1, is-not-valid: !state1 }>
-      <b-form-group id="loginEmail" :state="state1" >
+    <!-- <div class={ is-valid: state1, is-not-valid: !state1 }> -->
+    <b-form-group id="loginEmail" :state="state1">
       <b-form-input
         id="input-1"
         @keyup.enter="login"
@@ -26,8 +26,8 @@
         placeholder="비밀번호 입력(8자이상)"
       ></b-form-input>
     </b-form-group>
-    </div>
-    
+    <!-- </div> -->
+
     <div>
       <div class="basic-btn-css mr-1" @click="login">로그인</div>
       <div class="basic-btn-css" @click="cancelClick">취소</div>
@@ -56,7 +56,7 @@ export default {
             this.$session.start();
             this.$session.set("jwt", response.data.message);
             this.$store.dispatch("login", response.data.message);
-            this.$store.dispatch("getUserInfo", this.credentials.email);
+            this.$store.dispatch("setUser", this.credentials.email);
             console.log(response.data.message);
           })
           .catch(error => {
@@ -71,12 +71,20 @@ export default {
   computed: {
     // email
     state1() {
-      return Emailvalidator.validate(this.credentials.email);
+      if ( this.credentials.email === "" ) {
+        return null
+      } else {
+        return Emailvalidator.validate(this.credentials.email);
+      }
     },
 
     // password
     state2() {
-      return this.credentials.password.length >= 8 ? true : false;
+      if ( this.credentials.password === "" ) {
+        return null
+      } else {
+        return this.credentials.password.length >= 8 ? true : false;
+      }
     }
   },
   data() {

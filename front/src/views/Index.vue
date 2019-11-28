@@ -10,7 +10,7 @@
       <SearchBar class="wallpaper-center text-center" />
     </div>
 
-    <div v-if="isLoggedIn && movies.length" class="mx-3 wallpaper-center">
+    <div v-if="isLoggedIn && movies.length" class="px-3 wallpaper-center">
       <!-- 최신작 -->
       <flickity ref="flickity" :options="flickityOptions">
         <b-container v-for="(i, i_idx) in idx" :key="i_idx" class="bv-example-row">
