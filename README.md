@@ -1,6 +1,91 @@
 # 세상에 나쁜 영화는 없다.
 - 사용 프레임 워크: express + mongodb
 
+
+
+# 0. 기능
+
+- 기본적으로 검색기능을 강화함
+  - 목적에 맞는 다양한 세부 설정을 제공
+
+## 기본레이아웃
+
+- 기본적인 레이아웃 구글의 검색 엔진과 유사
+- 로그인이 되었을 때와 아닐 때 유저정보 사항을 다르게 보여줌
+
+![홈](./assets/홈.png)
+
+- v-if로 세션에 저장된 로그인  정보를 읽어서 분기
+
+```javascript
+<div v-if="isLoggedIn">
+  <div @click="goUserPage" class="basic-btn-css mr-1">유저</div>
+  <div @click.prevent="logout" class="basic-btn-css mr-1">로그아웃</div>
+</div>
+<div v-else>
+  <div @click="loginClick" class="basic-btn-css mr-1">로그인</div>
+  <div @click="signupClick" class="basic-btn-css mr-1">회원가입</div>
+</div>
+```
+
+## 검색 창
+
+- 기본적인 키워드 검색 뿐 아니라 조건을 설정 할 수 있음
+- 해당 화면은 숨어 있다가 필요에 맞게 불러올 수 있음![1574974374039](./assets/검색창.png)
+
+- v-show를 이용하여 표현
+
+```javascript
+<div v-show-slide="featuresOpen" class="div-center detail-search mb-3">
+  <!-- 장르 -->
+  <genreBtn v-for="(genre, idx) in genres" :key="idx" :genre="genre" />
+
+  <!-- 개봉연도 -->
+  <div class="my-3">
+    <input v-model="searchInfo.openDt.from" type="date" /> -
+    <input v-model="searchInfo.openDt.to" type="date" />
+  </div>
+(...)
+</div>
+```
+
+
+
+## 검색결과
+
+- 검색 키워드 입력시 영화제목, 감독명, 배우명으로 3 가지 항목을 모두 검색함
+  - 해당 카테고리에 해당 하는 값이 없을 경우 보여주지 않음
+- 기본적으로 띄어쓰기를 맞추지 않아도 찾을 수 있음
+
+![1574975484268](./assets/검색결과.png)
+
+- 검색시 DB에 영화정보를 요청하고 그에 맞게 하위 컴포넌트로 구성하는 형식
+
+```javascript
+// movie list
+<div @click="goDetailView" class="movie-image" v-bind:style="{ backgroundImage: 'url(' + movie.posterUrl + ')' }">
+  <div class="content">
+    <!-- <h1 class="title">{{ movie.title }}</h1> -->
+    <p class="duration">{{ movie.runningTime }}min</p>
+  </div>
+</div>
+```
+
+- 해당 영화를 클릭하면 상세 정보를 볼 수 있음
+
+## 영화 세부 정보
+
+- 영화에 대한 세부정보로 제공되는 내용은
+  - 개봉일, 런닝타임, 배우, 감독, 줄거리 등 
+- 보고싶어요를 통해 영화를 찜하고 나중에 해당 영화들만 모아서 볼 수 있음
+- 별점을 남겨 만족도를 표시할 수 있음
+
+![영화디테일](./assets/영화디테일.png)
+
+- 리뷰를 달아 영화에 대한 자신의 생각을 담을 수 있음
+
+![리뷰](./assets/리뷰.png)
+
 ## 1. DB연결
 - app.py
 
@@ -229,5 +314,5 @@
   ```
 
 - 정보 수정 및 삭제
-    
+  
     - RESTful한 api를 만들기 위해서 put과 delete메서드를 사용해서 구현
