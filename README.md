@@ -7,6 +7,32 @@
 
 - 기본적으로 검색기능을 강화함
   - 목적에 맞는 다양한 세부 설정을 제공
+- 기본적으로 vuex를 이용하여 정보들을 관리함
+  - 특히 자주사용되고 계속해서 관리할 필요가 있는 로그인한 유저정보 등을 활용
+
+```javascript
+getters: {
+  isLoggedIn(state) {
+    return state.token ? true : false
+  },
+  options(state) {
+    return {
+      headers: {
+        Authorization: 'JWT ' + state.token
+      }
+    }
+  },
+  myEmail(state) {
+    return state.token ? jwtDecode(state.token).email : null
+  },
+  getResult(state) {
+    return state.searchMovieResults ? true : false
+  },
+  getUsers(state) {
+    return state.findUsers ? true : false 
+  }
+},
+```
 
 ## 기본레이아웃
 
@@ -27,6 +53,39 @@
   <div @click="signupClick" class="basic-btn-css mr-1">회원가입</div>
 </div>
 ```
+
+## 회원가입 및 로그인
+
+### 회원가입
+
+- 회원가입은 최소한의 정보로 이루어짐
+- 회원가입시 유저의 이메일정보를 키값으로 활용
+  - 이 후 특정유저를 조회할 수 있음
+- 이메일의 경우 자체 형식에 맞는지 검증한 후 서버로 전송
+
+```javascript
+// block에 대한 예시
+<b-form-group id="signupEmail" :state="state1">
+  <b-form-input
+    @keyup.enter="signup"
+    v-model="credentials.email"
+    :state="state1"
+    trim
+    placeholder="이메일 입력"
+  ></b-form-input>
+</b-form-group>
+```
+
+![1574977174296](./assets/회원가입.png)
+
+### 로그인
+
+- 로그인을 하면 서버로 부터 토큰을 발급 받음
+- 이 정보를 세션에 저장하여 페이지가 새로고침되어도 유지할 수 있음
+
+![1574977411297](./assets/로그인세션.png)
+
+
 
 ## 검색 창
 
@@ -75,6 +134,7 @@
 
 ## 영화 세부 정보
 
+- 
 - 영화에 대한 세부정보로 제공되는 내용은
   - 개봉일, 런닝타임, 배우, 감독, 줄거리 등 
 - 보고싶어요를 통해 영화를 찜하고 나중에 해당 영화들만 모아서 볼 수 있음
