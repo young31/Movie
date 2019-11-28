@@ -178,7 +178,8 @@ router.post('/:index/review', async function(req, res) {
   let movie = await Movie.findOne({ index: req.params.index })
   const review = { // user, rate, content
     email: req.body.email,
-    content: req.body.content
+    content: req.body.content,
+    userId: req.body.userId
   }
 
   movie.reviews.push(review)
@@ -191,6 +192,23 @@ router.post('/:index/review', async function(req, res) {
   }
   user.reviews.push(user_review)
   user.save()
+  res.send('successfully saved')
+})
+
+// 리뷰 삭제
+router.delete('/:index/review', async function(req, res) {
+  let movie = await Movie.findOne({ index: req.params.index })
+  console.log(movie.reviews)
+  const fm = item => item.email === req.body.email
+  movie.reviews.splice(movie.reviews.findIndex(fm), 1)
+  movie.save()
+    // console.log(movie.reviews)
+
+  let user = await User.findOne({ email: req.body.email })
+  const fu = item => item.index === req.params.index
+  user.reviews.splice(user.reviews.findIndex(fu), 1)
+  user.save()
+    // console.log(user.reviews)
   res.send('successfully saved')
 })
 
