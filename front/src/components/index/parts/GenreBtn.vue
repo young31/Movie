@@ -23,7 +23,7 @@ export default {
 </script>
 
 <style>
-.btn-inactive {
+/* .btn-inactive {
   display: inline-block;
   color: white;
   border-color: transparent;
@@ -40,5 +40,5 @@ export default {
   letter-spacing: -0.0625vw;
   border-radius: 4vh;
   outline: none;
-}
+} */
 </style>
