@@ -7,34 +7,57 @@ const cheerio = require('cheerio')
 const delay = require('delay')
 let date = require('yyyy-mm-dd')
 
-// let data = await Movie.find({})
-// for (i = 14847; i < data.length; i++) {
-//   const html = await axios.get(data[i].posterUrl)
-//   const $ = cheerio.load(html.data);
-//   const imgSrc = $('#targetImage').attr('src')
-//   data[i].posterUrl = imgSrc
-//   data[i].save()
-//   console.log(data[i].index)
-//     // await delay(200)
+const crawling = async() => {
+    let data = await Movie.find({})
+    for (i = 171581; i < data.length; i++) {
+      const html = await axios.get(data[i].posterUrl)
+      const $ = cheerio.load(html.data);
+      const imgSrc = $('#targetImage').attr('src')
+      data[i].posterUrl = imgSrc
+      data[i].save()
+      console.log(i)
+    }
+  }
+  // 이름만들기
+  // let movies = await Movie.find()
+  // for (movie of movies) {
+  //   movie.acotrs_name = []
+  //   try {
+  //     for (a of movie.actors) {
+  //       let c = a.name.split(' ').join('')
+  //       movie.actors_name.push(c)
+  //     }
+  //   } catch (e) {
+  //     res.send('error')
+  //   }
 
-// 이름만들기
-// let movies = await Movie.find()
-// for (movie of movies) {
-//   movie.acotrs_name = []
+// router.get('/test', async function(req, res) {
 //   try {
-//     for (a of movie.actors) {
-//       let c = a.name.split(' ').join('')
-//       movie.actors_name.push(c)
-//     }
+//     crawling()
 //   } catch (e) {
-//     res.send('error')
+//     console.log(e)
 //   }
+//   res.send('good')
+// })
 
-router.get('/test', async function(req, res) {
-  res.send('good')
-})
-
-
+// router.get('/test2', async function(req, res) {
+//     let movies = await Movie.find()
+//     for (movie of movies) {
+//       movie.actors_name = []
+//       try {
+//         for (m of movie.actors) {
+//           movie.actors_name.push(m.name.split(' ').join(''))
+//         }
+//       } catch (e) {
+//         console.log(e)
+//       }
+//       // res.send(movie)
+//       await movie.save()
+//         // res.json(movie)
+//       console.log(movie.index)
+//     }
+//     res.send('success')
+//   })
 // for (d of data) {
 //   d.title_trim = d.title.split(' ').join('')
 //   console.log(d.title.split(' ').join(''))
@@ -42,10 +65,13 @@ router.get('/test', async function(req, res) {
 // }
 
 // 영화 전체 조회
-router.get('/', function(req, res, next) {
+router.get('/', async function(req, res, next) {
   Movie.find({}).lt('openDt', date())
+    .sort('-openDt -score')
+    .ne('score', null)
+    .limit(50)
     .then((movies) => {
-      console.log(movies[0])
+      // console.log(movies[0])
       if (!movies.length) {
         return res.status(404).send({ message: 'error' })
       }

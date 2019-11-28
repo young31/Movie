@@ -17,7 +17,7 @@ const movieSchema = new Schema({
   score: { type: Float },
   rate: Array,
   directors: Array,
-  director_name: Array,
+  directors_name: Array,
   actors: Array,
   actors_name: Array,
   description: String,

@@ -11,22 +11,31 @@ const get_delay = async() => {
   await delay(200)
 }
 
-const crawling = async() => {
-  for (let i = 1; i < 190561; i++) {
-    let movie = await Movie.find({ index: i })
-    console.log(i)
 
-    try {
-      get_delay()
-    } catch (e) {
-      console.log(e)
-    }
-    const html = await axios.get(movie.posterUrl)
+// let data = await Movie.find({})
+// for (i = 14847; i < data.length; i++) {
+//   const html = await axios.get(data[i].posterUrl)
+//   const $ = cheerio.load(html.data);
+//   const imgSrc = $('#targetImage').attr('src')
+//   data[i].posterUrl = imgSrc
+//   data[i].save()
+//   console.log(data[i].index)
+//     // await delay(200)
+// }
+
+
+const crawling = async() => {
+  let data = await Movie.find({})
+  for (i = 0; i < data.length; i++) {
+    const html = await axios.get(data[i].posterUrl)
     const $ = cheerio.load(html.data);
     const imgSrc = $('#targetImage').attr('src')
-    console.log(imgSrc)
+    data[i].posterUrl = imgSrc
+    data[i].save()
+    console.log(i)
   }
 }
+
 
 try {
   crawling()
