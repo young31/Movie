@@ -260,16 +260,17 @@ router.post('/:index/rate', async function(req, res) {
       email: req.body.email,
       rate: req.body.rate
     })
-    user.rate.push({
-      index: req.params.index,
+    user_rate.push({
+      index: parseInt(req.params.index),
       rate: req.body.rate
     })
   }
 
   movie.rate = rate
   user.rate = user_rate
-  await movie.save()
-  await user.save()
+  console.log(user)
+    // await movie.save()
+    // await user.save()
 
   // let user = await User.findOne({ email: req.body.email })
   // if (user.like_movies.includes(req.params.index)) {
