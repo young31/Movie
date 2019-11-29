@@ -10,20 +10,22 @@
       <SearchBar class="wallpaper-center text-center" />
     </div>
 
-    <div v-if="isLoggedIn && movies.length" class="px-3 movie-align">
-      <!-- 최신작 -->
-      <swiper :options="swiperOption">
-        <swiperSlide v-for="movie in movies" :key="movie.key">
-          <MovieList :movie="movie" />
-        </swiperSlide>
-      </swiper>
+    <div v-if="isLoggedIn && movies.length" class="px-3 wallpaper-center">
+      <div class="movie-align">
+        <!-- 최신작 -->
+        <swiper :options="swiperOption">
+          <swiperSlide v-for="movie in movies" :key="movie.key">
+            <MovieList :movie="movie" />
+          </swiperSlide>
+        </swiper>
+      </div>
 
       <!-- 추천작 -->
-      <swiper :options="swiperOption">
+      <!-- <swiper :options="swiperOption">
         <swiperSlide v-for="movie in movies" :key="movie.key">
           <MovieList :movie="movie" />
         </swiperSlide>
-      </swiper>
+      </swiper>-->
     </div>
   </div>
 </template>
@@ -82,7 +84,8 @@ export default {
 }
 
 .swiper-container {
-  height: 500px;
+  /* height: 500px; */
+  height: 100vh;
 }
 
 .movie-align {
@@ -94,8 +97,8 @@ export default {
   /* justify-content: center; */
 }
 
-.swiper-container[data-v-23543608] {
+/* .swiper-container[data-v-23543608] {
   /* height: 500px; */
-  height: 100vh;
-}
+  /* height: 100vh; */
+/* } */
 </style>

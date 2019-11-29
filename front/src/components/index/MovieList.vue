@@ -42,7 +42,7 @@ h1, h2 {
   background-color: rgba(255, 255, 255, 0.7) !important;
   background-position: center;
   background-repeat: no-repeat !important;
-  background-blend-mode: overlay !important;
+  /* background-blend-mode: overlay !important; */
   background-size: cover !important;
 }
 /* .movie-image:hover {
