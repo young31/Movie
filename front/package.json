@@ -10,7 +10,7 @@
   "dependencies": {
     "@codekraft-studio/vue-animated": "^0.1.5",
     "animate.css": "^3.7.2",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "bootstrap": "^4.3.1",
     "bootstrap-icons": "^1.0.0-alpha",
     "bootstrap-vue": "^2.1.0",
